@@ -14,7 +14,7 @@
   <body>
     <nav class="navbar is-fixed-top" role="navigation" aria-label="main navigation" data-controller="main-nav">
       <div class="navbar-brand">
-        <%= link_to(decks_path, class: "navbar-item menu-spacer") do %>
+        <%= link_to(decks_path, class: "navbar-item") do %>
           <%= image_tag("logo_120.png", class: "site-logo-image") %>
           <span class="navbar-title has-text-weight-semibold">Flashcards</span>
         <% end %>
@@ -55,7 +55,7 @@
           </div>
         </div>
 
-        <div class="navbar-end menu-spacer"></div>
+        <div class="navbar-end"></div>
           <% if @current_user.present? %>
             <%= link_to('Log out', logout_path, method: :delete, class: "navbar-item button is-small is-danger logout-button") %>
           <% end %>

@@ -12,9 +12,6 @@ html {
 }
 
 .navbar {
-  .menu-spacer {
-    width: 160px;
-  }
   .navbar-title {
     font-size: 1.4em;
     @media screen and (max-width: $navbar-breakpoint) {
