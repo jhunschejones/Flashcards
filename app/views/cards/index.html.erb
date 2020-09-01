@@ -9,7 +9,7 @@
         </tr>
       </thead>
       <tbody>
-        <%= render(partial: 'cards/card', collection: @cards) %>
+        <%= render(partial: 'cards/card', collection: @cards, cached: true) %>
       </tbody>
     </table>
   </div>
