@@ -1,0 +1,32 @@
+<div class="new-resource">
+  <div class="new-resource-form-container">
+    <h2 class="title is-4">New card</h2>
+
+    <%= form_with(model: @card, url: cards_path) do |f| %>
+      <div class="field">
+        <%= f.label :english %>
+        <%= f.text_field :english, autocomplete: 'off', class: "input" %>
+      </div>
+
+      <div class="field">
+        <%= f.label :japanese %>
+        <%= f.text_field :japanese, autocomplete: 'off', class: "input" %>
+      </div>
+
+      <div class="field">
+        <%= f.label :audio_sample %><br/>
+        <%= f.file_field :audio_sample %>
+      </div>
+
+      <div class="field">
+        <%= f.label "Create in deck" %><br/>
+        <%= f.select :deck_id, options_from_collection_for_select(@decks, "id", "name"), include_blank: true %>
+      </div>
+
+      <div class="actions">
+        <%= f.submit "Create", class: "button is-info" %>
+        <%= link_to "Back", cards_path, class: "button is-info is-outlined" %>
+      </div>
+    <% end %>
+  </div>
+</div>

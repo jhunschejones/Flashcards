@@ -1,0 +1,103 @@
+.deck-show-container {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  .deck-name {
+    margin: 12px 0px;
+    color: $dark-text-color;
+  }
+  .card-interaction-container {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    width: 100%;
+  }
+  .next-card {
+    width: 90%;
+    max-width: 600px;
+    background-color: $card-background;
+    box-shadow: 0 1px 4px rgba(0,0,0,0.1), 0 10px 30px #f3ece8;
+    border-radius: 9px;
+    height: 30px;
+    margin-bottom: -11px;
+    padding-top: 11px;
+  }
+  .deck-show-card {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    text-align: center;
+    width: 100%;
+    max-width: 625px;
+    min-height: 200px;
+    background-color: $card-background;
+    box-shadow: $shallow-box-shadow;
+    border-radius: 9px;
+    margin: 0px 12px 12px 12px;
+    padding: 12px;
+    .english-text {
+      font-size: 2em;
+      display: none;
+    }
+    .japanese-text {
+      font-size: 2em;
+      display: none;
+    }
+    .audio-sample {
+      display: none;
+      margin-top: 6px;
+    }
+  }
+  .deck-controls {
+    display: flex;
+    .next-card-form {
+      margin-right: 10px;
+    }
+  }
+}
+
+.all-decks-container {
+  display: flex;
+  align-items: center;
+  flex-direction: column;
+  .all-decks-card {
+    margin-top: 10px;
+    margin-bottom: 18px;
+    padding: 20px;
+    background-color: $card-background;
+    box-shadow: $deep-box-shadow;
+    width: 90%;
+    max-width: 930px;
+    min-height: 88vh;
+    border-radius: 3px;
+    .edit-column {
+      width: 60px;
+      text-align: center;
+    }
+    .edit-deck-cell {
+      text-align: center;
+    }
+  }
+}
+
+.edit-resource {
+  .cards-list {
+    .title {
+      font-size: 1.6rem;
+      font-weight: 700;
+      color: #4a4a4a;
+      margin-top: 10px;
+      margin-bottom: 10px;
+    }
+    margin-top: 40px;
+    width: 100%;
+    max-width: 700px;
+    .edit-column {
+      width: 60px;
+      text-align: center;
+    }
+    .edit-card-cell {
+      text-align: center;
+    }
+  }
+}

@@ -1,0 +1,22 @@
+<div class="new-resource">
+  <div class="new-resource-form-container">
+    <h2 class="title is-4">New deck</h2>
+
+    <%= form_with(model: @deck, url: decks_path) do |f| %>
+      <div class="field">
+        <%= f.label :name %>
+        <%= f.text_field :name, autocomplete: 'off', class: "input" %>
+      </div>
+
+      <div class="field">
+        <%= f.label "Front of card shows" %><br/>
+        <%= f.select :start_with, options_for_select(@start_with_options, @deck.start_with) %>
+      </div>
+
+      <div class="actions">
+        <%= f.submit "Create", class: "button is-info" %>
+        <%= link_to "Back", decks_path, class: "button is-info is-outlined" %>
+      </div>
+    <% end %>
+  </div>
+</div>

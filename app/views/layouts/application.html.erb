@@ -1,0 +1,83 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Flashcards</title>
+    <%= csrf_meta_tags %>
+    <%= csp_meta_tag %>
+
+    <%= stylesheet_link_tag 'application', media: 'all', 'data-turbolinks-track': 'reload' %>
+    <%= javascript_pack_tag 'application', 'data-turbolinks-track': 'reload' %>
+    <%#= favicon_link_tag asset_path('favicon.ico') %>
+  </head>
+  <body>
+    <nav class="navbar is-fixed-top" role="navigation" aria-label="main navigation" data-controller="main-nav">
+      <div class="navbar-brand">
+        <%= link_to(decks_path, class: "navbar-item menu-spacer") do %>
+          <%= image_tag("logo_120.png", class: "site-logo-image") %>
+          <span class="navbar-title has-text-weight-semibold">Flashcards</span>
+        <% end %>
+
+        <a role="button" class="navbar-burger burger" aria-label="menu" aria-expanded="false" data-target="main-nav.mainNavBurger" data-action="click->main-nav#toggle">
+          <span aria-hidden="true"></span>
+          <span aria-hidden="true"></span>
+          <span aria-hidden="true"></span>
+        </a>
+      </div>
+
+      <div class="navbar-menu main-nav-menu" data-target="main-nav.mainNavMenu">
+        <div class="navbar-start main-nav-items">
+          <%= link_to(decks_path, class: "navbar-item has-text-weight-bold") do %>
+            <span class="icon is-small">
+              <i class="fas fa-folder-open"></i>
+            </span>
+            <span>All Decks</span>
+          <% end %>
+          <%= link_to(cards_path, class: "navbar-item has-text-weight-bold") do %>
+            <span class="icon is-small">
+              <i class="fas fa-sticky-note"></i>
+            </span>
+            <span>All Cards</span>
+          <% end %>
+          <div class="navbar-item has-dropdown is-hoverable">
+            <a class="navbar-link has-text-weight-bold">
+              <span class="icon is-small">
+                <i class="fas fa-plus"></i>
+              </span>
+              <span>New</span>
+            </a>
+
+            <div class="navbar-dropdown is-boxed">
+              <%= link_to("New Card", new_card_path, class: "navbar-item") %>
+              <%= link_to("New Deck", new_deck_path, class: "navbar-item") %>
+            </div>
+          </div>
+        </div>
+
+        <div class="navbar-end menu-spacer"></div>
+      </div>
+    </nav>
+
+    <div class="page-container">
+      <% if flash[:alert] %>
+        <div class="flash notification is-danger" data-controller="flash">
+          <button class="delete" data-action="click->flash#close"></button>
+          <p class="notice"><%= flash[:alert] %></p>
+        </div>
+      <% elsif flash[:notice] %>
+        <div class="flash notification is-warning" data-controller="flash">
+          <button class="delete" data-action="click->flash#close"></button>
+          <p class="notice"><%= flash[:notice] %></p>
+        </div>
+      <% elsif flash[:success] %>
+        <div class="flash notification is-success" data-controller="flash">
+          <button class="delete" data-action="click->flash#close"></button>
+          <p class="notice"><%= flash[:success] %></p>
+        </div>
+      <% end %>
+
+      <%= yield %>
+    </div>
+  </body>
+</html>

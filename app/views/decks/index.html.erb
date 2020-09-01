@@ -1,0 +1,16 @@
+<div class="all-decks-container">
+  <div class="all-decks-card">
+    <table class="table is-fullwidth is-hoverable is-striped">
+      <thead>
+        <tr>
+          <th>Deck Name</th>
+          <th class="edit-column">Edit</th>
+          <th class="edit-column">Delete</th>
+        </tr>
+      </thead>
+      <tbody>
+        <%= render(partial: 'decks/deck', collection: @decks) %>
+      </tbody>
+    </table>
+  </div>
+</div>

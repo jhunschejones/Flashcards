@@ -1,0 +1,18 @@
+// Site variables
+$background-color: #f6f2ef;
+$dark-text-color: #283c46;
+$card-background: #FFF;
+$light-grey-border: #dbdbdb;
+$shallow-box-shadow: 0 0 1px rgba(0,0,0,0.25), 0 1px 3px rgba(0,0,0,0.1);
+$medium-box-shadow: 0 0 2px rgba(0,0,0,0.35), 0 1px 3px rgba(0,0,0,0.1);
+$deep-box-shadow: 0 -1px 10px rgba(0,0,0,0.05), 0 1px 4px rgba(0,0,0,0.1), 0 10px 30px #f3ece8;
+
+// Bulma overrides
+$navbar-breakpoint: 720px;
+$navbar-background-color: $background-color;
+$navbar-item-color: $dark-text-color;
+$navbar-item-hover-color: $dark-text-color;
+$navbar-item-hover-background-color: $background-color;
+$navbar-dropdown-background-color: $card-background;
+$navbar-item-img-max-height: 24px;
+$navbar-dropdown-offset: -8px;

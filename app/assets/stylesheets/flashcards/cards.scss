@@ -1,0 +1,80 @@
+.card-details-container {
+  display: flex;
+  justify-content: center;
+  .card-details-card {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    text-align: center;
+    width: 100%;
+    max-width: 625px;
+    min-height: 200px;
+    background-color: $card-background;
+    box-shadow: $shallow-box-shadow;
+    border-radius: 9px;
+    margin: 0px 12px 12px 12px;
+    padding: 12px;
+    .english-text {
+      font-size: 2em;
+    }
+    .japanese-text {
+      font-size: 2em;
+    }
+    .audio-sample {
+      margin-top: 6px;
+    }
+  }
+}
+
+.all-cards-container {
+  display: flex;
+  align-items: center;
+  flex-direction: column;
+  .all-cards-card {
+    margin-top: 10px;
+    margin-bottom: 18px;
+    padding: 20px;
+    background-color: $card-background;
+    box-shadow: $deep-box-shadow;
+    width: 90%;
+    max-width: 930px;
+    min-height: 88vh;
+    border-radius: 3px;
+    .edit-column {
+      width: 60px;
+      text-align: center;
+    }
+    .edit-card-cell {
+      text-align: center;
+    }
+  }
+}
+
+.edit-resource {
+  .decks-list {
+    .title {
+      font-size: 1.6rem;
+      font-weight: 700;
+      color: #4a4a4a;
+      margin-top: 10px;
+      margin-bottom: 10px;
+    }
+    margin-top: 40px;
+    width: 100%;
+    max-width: 700px;
+    .edit-column,
+    .included-in-deck-column {
+      width: 60px;
+      text-align: center;
+    }
+    .edit-deck-cell,
+    .included-in-deck-cell {
+      text-align: center;
+      input {
+        height: 18px;
+        width: 18px;
+        margin-top: 3px;
+      }
+    }
+  }
+}

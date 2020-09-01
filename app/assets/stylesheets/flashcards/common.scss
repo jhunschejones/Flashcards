@@ -1,0 +1,63 @@
+html {
+  background-color: $background-color;
+}
+
+.navbar-dropdown {
+  // Override bulma default
+  padding: 0px !important;
+}
+
+.page-container {
+  margin-top: 52px;
+}
+
+.navbar {
+  .menu-spacer {
+    width: 160px;
+  }
+  .navbar-title {
+    font-size: 1.4em;
+    @media screen and (max-width: $navbar-breakpoint) {
+      font-size: 1.3em;
+      font-weight: 500 !important;
+    }
+  }
+  .site-logo-image {
+    margin-right: 8px;
+  }
+  .main-nav-items {
+    margin-left: auto;
+    margin-right: unset;
+    .icon {
+      margin-right: 5px;
+    }
+  }
+}
+
+.flash {
+  margin: 5px;
+}
+
+.new-resource,
+.edit-resource {
+  padding: 12px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  margin-bottom: 20px;
+  .new-resource-form-container,
+  .edit-resource-form-container {
+    width: 100%;
+    max-width: 700px;
+    .title {
+      font-size: 1.6rem;
+      font-weight: 700;
+      color: #4a4a4a;
+      margin-top: 10px;
+      margin-bottom: 10px;
+    }
+    .actions {
+      padding-top: 10px;
+    }
+  }
+}

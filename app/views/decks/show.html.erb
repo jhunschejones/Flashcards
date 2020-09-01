@@ -1,0 +1,33 @@
+<div class="deck-show-container">
+  <h1 class="title deck-name"><%= @deck.name %></h1>
+
+  <% if @current_card %>
+    <div class="card-interaction-container" data-controller="card" data-card-start-with="<%= @deck.start_with %>">
+      <div class="next-card"></div>
+      <div class="deck-show-card">
+        <div class="english-text" data-target="card.englishText">
+          <%= @current_card.english %>
+        </div>
+        <div class="japanese-text" data-target="card.japaneseText">
+          <%= @current_card.japanese %>
+        </div>
+        <% if @current_card.audio_sample.attached? %>
+          <div class="audio-sample" data-target="card.audioSample">
+            <audio controls>
+              <source src="<%= url_for(@current_card.audio_sample) %>" type="audio/mpeg">
+              Your browser does not support the audio tag.
+            </audio>
+          </div>
+        <% end %>
+      </div>
+      <div class="deck-controls">
+        <%= form_tag(next_card_path(@deck.id), method: :patch, class: "next-card-form") do %>
+          <%= submit_tag "Next card", class: "button is-info" %>
+        <% end %>
+        <button class="button is-info" data-action="click->card#flip">
+          Flip card
+        </button>
+      </div>
+    </div>
+  <% end %>
+</div>

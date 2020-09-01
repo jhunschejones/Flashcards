@@ -1,0 +1,17 @@
+<tr data-card-id="<%= card.id %>" data-deck-id="<%= @deck&.id || 0 %>">
+  <td><%= link_to(card.english, card_path(card), class: "has-text-link") %></td>
+  <td class="edit-card-cell">
+    <%= link_to(edit_card_path(card), class: "has-text-link") do %>
+      <span class="icon is-small">
+        <i class="fas fa-edit"></i>
+      </span>
+    <% end %>
+  </td>
+  <td class="edit-card-cell">
+    <%= link_to(card_path(card), class: "has-text-link", data: { confirm: "Are you sure you want to delete this card? This action is permanent and cannot be undone." }, method: :delete, remote: true ) do %>
+      <span class="icon is-small">
+        <i class="fas fa-trash"></i>
+      </span>
+    <% end %>
+  </td>
+</tr>

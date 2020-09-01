@@ -1,0 +1,14 @@
+<div class="card-details-container">
+  <div class="card-details-card">
+    <div class="english-text"><%= @card.english %></div>
+    <div class="japanese-text"><%= @card.japanese %></div>
+    <% if @card.audio_sample.attached? %>
+      <div class="audio-sample">
+        <audio controls>
+          <source src="<%= url_for(@card.audio_sample) %>" type="audio/mpeg">
+          Your browser does not support the audio tag.
+        </audio>
+      </div>
+    <% end %>
+  </div>
+</div>

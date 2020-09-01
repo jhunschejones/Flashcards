@@ -1,0 +1,44 @@
+<div class="edit-resource">
+  <div class="edit-resource-form-container">
+    <h2 class="title is-4">Edit card</h2>
+
+    <%= form_with(model: @card, url: card_path(@card)) do |f| %>
+      <div class="field">
+        <%= f.label :english %>
+        <%= f.text_field :english, autocomplete: 'off', class: "input" %>
+      </div>
+
+      <div class="field">
+        <%= f.label :japanese %>
+        <%= f.text_field :japanese, autocomplete: 'off', class: "input" %>
+      </div>
+
+      <div class="field">
+        <%= f.label "New audio sample" %><br/>
+        <%= f.file_field :audio_sample %>
+      </div>
+
+      <div class="actions">
+        <%= f.submit "Update", class: "button is-info" %>
+        <%= link_to "Back", card_path(@card), class: "button is-info is-outlined" %>
+      </div>
+    <% end %>
+  </div>
+
+  <div class="decks-list">
+    <h2 class="title is-4">Manage card decks</h2>
+    <table class="table is-fullwidth is-hoverable is-striped">
+      <thead>
+        <tr>
+          <th class="included-in-deck-column">Included</th>
+          <th>Name</th>
+          <th class="edit-column">Edit</th>
+          <th class="edit-column">Delete</th>
+        </tr>
+      </thead>
+      <tbody>
+        <%= render(partial: 'decks/deck', collection: @decks, locals: { card: @card }) %>
+      </tbody>
+    </table>
+  </div>
+</div>

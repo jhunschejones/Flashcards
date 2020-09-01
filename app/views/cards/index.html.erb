@@ -1,0 +1,16 @@
+<div class="all-cards-container">
+  <div class="all-cards-card">
+    <table class="table is-fullwidth is-hoverable is-striped">
+      <thead>
+        <tr>
+          <th>English</th>
+          <th class="edit-column">Edit</th>
+          <th class="edit-column">Delete</th>
+        </tr>
+      </thead>
+      <tbody>
+        <%= render(partial: 'cards/card', collection: @cards) %>
+      </tbody>
+    </table>
+  </div>
+</div>
