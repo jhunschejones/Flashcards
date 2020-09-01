@@ -13,4 +13,8 @@ Rails.application.routes.draw do
 
   patch '/decks/:id/next_card', to: 'decks#next_card', as: :next_card
   patch '/card_decks/move', to: 'card_decks#move'
+
+  %w( 404 422 500 503 ).each do |code|
+    get code, :to => "static_pages#error", :code => code
+  end
 end

@@ -1,0 +1,23 @@
+.static-page-container {
+  padding: 12px;
+  display: flex;
+  justify-content: center;
+  .static-page-content {
+    margin: 12px 0px 12px 0px;
+    padding: 24px;
+    background-color: $card-background;
+    width: 100%;
+    max-width: 780px;
+    p {
+      margin-bottom: 16px
+    }
+    @media screen and (max-width: 680px) {
+      margin-top: 2px;
+      margin-bottom: 2px;
+    }
+  }
+}
+
+.about-image {
+  width: 100%;
+}

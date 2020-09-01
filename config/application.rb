@@ -15,5 +15,11 @@ module Flashcards
     # Application configuration can go into files in config/initializers
     # -- all .rb files in that directory are automatically loaded after loading
     # the framework and any gems in your application.
+
+    # https://thoughtbot.com/blog/content-compression-with-rack-deflater
+    config.middleware.use Rack::Deflater
+
+    # Send errors through the router to use custom 404 and 500 pages
+    config.exceptions_app = self.routes
   end
 end
