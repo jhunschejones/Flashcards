@@ -1,0 +1,19 @@
+.login-form-container {
+  padding: 16px;
+  display: flex;
+  justify-content: center;
+  .login-form {
+    .title {
+      font-weight: normal;
+      margin-bottom: 12px;
+    }
+    max-width: 600px;
+    width: 100%;
+  }
+}
+
+.logout-button {
+  max-width: 70px;
+  margin: 10px 12px 8px 22px;
+  display: flex;
+}

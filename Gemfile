@@ -12,7 +12,10 @@ gem 'turbolinks', '~> 5'
 gem 'acts_as_list'
 gem 'aws-sdk-s3', require: false
 gem 'redis', '~> 4.0'
+
 gem 'bcrypt', '~> 3.1.7'
+gem 'lockbox'
+gem 'blind_index'
 
 gem 'font_awesome5_rails'
 gem 'bulma-rails'
