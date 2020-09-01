@@ -11,17 +11,17 @@
         <div class="japanese-text" data-target="card.japaneseText">
           <%= @current_card.japanese %>
         </div>
-        <% if @current_card.audio_sample.attached? %>
-          <div class="audio-sample" data-target="card.audioSample">
+        <div class="audio-sample" data-target="card.audioSample">
+          <% if @current_card.audio_sample.attached? %>
             <audio controls>
               <source src="<%= url_for(@current_card.audio_sample) %>" type="audio/mpeg">
               Your browser does not support the audio tag.
             </audio>
-          </div>
-        <% end %>
+          <% end %>
+        </div>
       </div>
       <div class="deck-controls">
-        <%= form_tag(next_card_path(@deck.id), method: :patch, class: "next-card-form") do %>
+        <%= form_tag(next_card_path(@deck.id), method: :patch, class: "next-card-form", remote: true) do %>
           <%= submit_tag "Next card", class: "button is-info" %>
         <% end %>
         <button class="button is-info" data-action="click->card#flip">

@@ -3,7 +3,7 @@
     <td class="included-in-deck-cell">
       <% @card_deck = @card.card_decks.detect { |cg| cg.deck_id == deck.id } %>
       <% if @card_deck.present? %>
-        <%= form_with(model: @card_deck, url: card_deck_path(@card_deck), method: "delete", data: { target: "card-deck.form"}) do |f| %>
+        <%= form_with(model: @card_deck, url: card_deck_path(@card_deck), method: "delete", data: { target: "card-deck.form" }) do |f| %>
           <%= f.check_box :included, data: { action: "change->card-deck#toggle" }, checked: true %>
         <% end %>
       <% else %>

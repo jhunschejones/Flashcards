@@ -34,8 +34,11 @@ class DecksController < ApplicationController
   end
 
   def next_card
-    Card.set_next_card_for(deck: @deck)
-    redirect_to deck_path(@deck)
+    next_card = Card.set_next_card_for(deck: @deck)
+    respond_to do |format|
+      format.html { redirect_to deck_path(@deck) }
+      format.js { @current_card = next_card }
+    end
   end
 
   private

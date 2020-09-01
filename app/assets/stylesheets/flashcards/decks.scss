@@ -45,7 +45,9 @@
     }
     .audio-sample {
       display: none;
-      margin-top: 6px;
+      audio {
+        margin-top: 6px;
+      }
     }
   }
   .deck-controls {

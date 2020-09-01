@@ -1,0 +1,13 @@
+var englishText = document.querySelector(".english-text");
+var japaneseText = document.querySelector(".japanese-text");
+var previousAudioSampleAudio = document.querySelector(".audio-sample audio");
+
+englishText.innerHTML = "<%= @current_card.english %>"
+japaneseText.innerHTML = "<%= @current_card.japanese %>"
+
+if (previousAudioSampleAudio) {
+  previousAudioSampleAudio.parentElement.removeChild(previousAudioSampleAudio);
+}
+<% if @current_card.audio_sample.attached? %>
+  document.querySelector(".audio-sample").insertAdjacentHTML("beforeend", "<audio controls><source src='<%= url_for(@current_card.audio_sample) %>' type='audio/mpeg'>Your browser does not support the audio tag.</audio>");
+<% end %>
