@@ -1,7 +1,7 @@
 import { Controller } from "stimulus"
 
 export default class extends Controller {
-  static targets = [ "englishText", "japaneseText", "audioSample" ]
+  static targets = [ "englishText", "japaneseText", "audioSample", "loader"]
 
   initialize() {
     this.isFlipped = false;
@@ -23,6 +23,7 @@ export default class extends Controller {
     this.englishTextTarget.innerHTML = "";
     this.japaneseTextTarget.innerHTML = "";
     this.audioSampleTarget.innerHTML = "";
+    this.loaderTarget.classList.add("is-active");
 
     if(this.isFlipped) {
       // Flip card to the front to prepare for next card

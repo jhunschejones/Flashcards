@@ -19,6 +19,9 @@
             </audio>
           <% end %>
         </div>
+        <div class="loader-wrapper" data-target="card.loader">
+            <div class="loader is-loading"></div>
+        </div>
       </div>
       <div class="deck-controls">
         <%= form_tag(next_card_path(@deck.id), method: :patch, class: "next-card-form", remote: true) do %>

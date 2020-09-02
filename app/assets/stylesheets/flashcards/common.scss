@@ -58,3 +58,20 @@ html {
     }
   }
 }
+
+.loader-wrapper {
+  display: none;
+  justify-content: center;
+  align-items: center;
+  border-radius: 6px;
+
+  .loader {
+    height: 50px;
+    width: 50px;
+  }
+
+  &.is-active {
+    opacity: 1;
+    display: flex;
+  }
+}

@@ -1,7 +1,9 @@
+var loader = document.querySelector('.loader-wrapper');
 var englishText = document.querySelector(".english-text");
 var japaneseText = document.querySelector(".japanese-text");
 var previousAudioSampleAudio = document.querySelector(".audio-sample audio");
 
+loader.classList.remove("is-active");
 englishText.innerHTML = "<%= @current_card.english %>"
 japaneseText.innerHTML = "<%= @current_card.japanese %>"
 
