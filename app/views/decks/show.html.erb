@@ -22,7 +22,7 @@
       </div>
       <div class="deck-controls">
         <%= form_tag(next_card_path(@deck.id), method: :patch, class: "next-card-form", remote: true) do %>
-          <%= submit_tag "Next card", class: "button is-info" %>
+          <%= submit_tag "Next card", class: "button is-info", data: { action: "click->card#prepareForNextCard" } %>
         <% end %>
         <button class="button is-info" data-action="click->card#flip">
           Flip card

@@ -18,6 +18,19 @@ export default class extends Controller {
     return this.showBackOfCard();
   }
 
+  prepareForNextCard() {
+    // Prevent flashing by blanking out current card content
+    this.englishTextTarget.innerHTML = "";
+    this.japaneseTextTarget.innerHTML = "";
+    this.audioSampleTarget.innerHTML = "";
+
+    if(this.isFlipped) {
+      // Flip card to the front to prepare for next card
+      this.isFlipped = false;
+      return this.showFrontOfCard();
+    }
+  }
+
   showFrontOfCard() {
     switch(this.data.get("startWith")) {
       case "english":
