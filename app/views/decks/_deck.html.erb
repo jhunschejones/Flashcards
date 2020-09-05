@@ -1,6 +1,9 @@
 <tr class="deck-id-<%= deck.id %>" data-controller="card-deck">
   <td><%= link_to(deck.name, deck_path(deck), class: "has-text-link") %></td>
   <td class="edit-deck-cell">
+    <%= deck.card_decks.size %>
+  </td>
+  <td class="edit-deck-cell">
     <%= link_to(edit_deck_path(deck), class: "has-text-link") do %>
       <span class="icon is-small">
         <i class="fas fa-edit"></i>
