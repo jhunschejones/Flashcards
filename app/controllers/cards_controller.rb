@@ -50,7 +50,7 @@ class CardsController < ApplicationController
       CardDeck.find_or_create_by(card: @card, deck_id: params[:new_deck_id])
     end
 
-    @current_card = Card.set_next_card_for(deck: @current_deck)
+    @current_card = Card.next_card_in(deck: @current_deck)
     return redirect_to(deck_path(@current_deck)) unless @current_card.present?
 
     respond_to { |format| format.js { render '/decks/next_card' } }

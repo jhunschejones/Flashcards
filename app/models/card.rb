@@ -8,27 +8,40 @@ class Card < ApplicationRecord
 
   def self.find_or_set_current_card_for(deck:)
     return if deck.cards.blank?
-    current_card = CardDeck.includes(:card).find_by(deck: deck, status: CardDeck::CURRENT_CARD)&.card
-    unless current_card.present?
-      deck.card_decks.first.update(status: CardDeck::CURRENT_CARD)
-      current_card = deck.card_decks.first.card
-    end
-    current_card
+    CardDeck.find_or_set_current_card_deck(deck: deck).card
   end
 
-  def self.set_next_card_for(deck:)
+  def self.next_card_in(deck:)
     ActiveRecord::Base.transaction do
-      current_card = find_or_set_current_card_for(deck: deck)
-      return unless current_card.present?
+      current_card_deck = CardDeck.find_or_set_current_card_deck(deck: deck)
+      return unless current_card_deck.present?
 
-      card_ids = deck.cards.map(&:id)
-      next_card_id = card_ids[card_ids.find_index(current_card.id) + 1] || card_ids.first
-      next_card = Card.find(next_card_id)
+      next_card_deck = CardDeck.find_by(
+        position: current_card_deck.position.next,
+        deck_id: current_card_deck.deck_id
+      ) || deck.card_decks.first
 
-      CardDeck.find_by(deck: deck, card: current_card).update(status: "")
-      CardDeck.find_by(deck: deck, card: next_card).update(status: CardDeck::CURRENT_CARD)
+      current_card_deck.update(status: "")
+      next_card_deck.update(status: CardDeck::CURRENT_CARD)
 
-      next_card
+      next_card_deck.card
+    end
+  end
+
+  def self.previous_card_in(deck:)
+    ActiveRecord::Base.transaction do
+      current_card_deck = CardDeck.find_or_set_current_card_deck(deck: deck)
+      return unless current_card_deck.present?
+
+      previous_card_deck = CardDeck.find_by(
+        position: current_card_deck.position - 1,
+        deck_id: current_card_deck.deck_id
+      ) || deck.card_decks.last
+
+      current_card_deck.update(status: "")
+      previous_card_deck.update(status: CardDeck::CURRENT_CARD)
+
+      previous_card_deck.card
     end
   end
 end

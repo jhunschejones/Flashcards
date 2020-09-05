@@ -24,15 +24,28 @@
         </div>
       </div>
       <div class="deck-controls">
-        <%= form_tag(next_card_path(@deck.id), method: :patch, class: "next-card-form", remote: true) do %>
-          <%= submit_tag "Next card", class: "button is-success", data: { action: "click->card#prepareForNextCard" } %>
+        <%= form_tag(previous_card_in_deck_path(@deck.id), method: :patch, class: "previous-card-form", remote: true) do %>
+          <%= button_tag type: 'submit', class: "button is-info", data: { action: "click->card#prepareForNextCard" } do %>
+            <span class="icon">
+              <i class="fas fa-2x fa-caret-left"></i>
+            </span>
+          <% end %>
         <% end %>
-        <button class="button is-info" data-action="click->card#flip">
+
+        <button class="button is-info flip-card-button" data-action="click->card#flip">
           Flip card
         </button>
+
+        <%= form_tag(next_card_in_deck_path(@deck.id), method: :patch, class: "next-card-form", remote: true) do %>
+          <%= button_tag type: 'submit', class: "button is-info", data: { action: "click->card#prepareForNextCard" } do %>
+            <span class="icon">
+              <i class="fas fa-2x fa-caret-right"></i>
+            </span>
+          <% end %>
+        <% end %>
       </div>
       <div class="move-card-controls">
-        <%= form_tag(move_decks_path(@current_card.id), method: :patch, class: "move-decks-form", remote: true) do %>
+        <%= form_tag(move_decks_card_path(@current_card.id), method: :patch, class: "move-decks-form", remote: true) do %>
           <%= submit_tag "Move card", class: "button is-danger is-outlined is-small", data: { action: "click->card#prepareForNextCard" } %>
           <%= hidden_field_tag :old_deck_id, @deck.id %>
 

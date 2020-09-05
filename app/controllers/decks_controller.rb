@@ -1,5 +1,5 @@
 class DecksController < ApplicationController
-  before_action :set_deck, only: [:show, :edit, :update, :destroy, :next_card]
+  before_action :set_deck, only: [:show, :edit, :update, :destroy, :next_card, :previous_card]
 
   def index
     @decks = Deck.order(created_at: :desc)
@@ -36,10 +36,21 @@ class DecksController < ApplicationController
   end
 
   def next_card
-    next_card = Card.set_next_card_for(deck: @deck)
+    next_card = Card.next_card_in(deck: @deck)
     respond_to do |format|
       format.html { redirect_to deck_path(@deck) }
       format.js { @current_card = next_card }
+    end
+  end
+
+  def previous_card
+    previous_card = Card.previous_card_in(deck: @deck)
+    respond_to do |format|
+      format.html { redirect_to deck_path(@deck) }
+      format.js {
+        @current_card = previous_card
+        render '/decks/next_card'
+      }
     end
   end
 

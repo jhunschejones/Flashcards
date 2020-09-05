@@ -7,16 +7,27 @@ Rails.application.routes.draw do
     delete "logout" => :destroy
   end
 
-  resources :cards
-  resources :decks
-  resources :card_decks, only: [:create, :destroy]
+  resources :cards do
+    member do
+      patch :move_decks
+      delete :delete_audio_sample
+    end
+  end
 
-  patch '/card/:id/move_decks', to: 'cards#move_decks', as: :move_decks
-  delete '/card/:id/delete_audio_sample', to: 'cards#delete_audio_sample', as: :delete_audio_sample
-  patch '/decks/:id/next_card', to: 'decks#next_card', as: :next_card
-  patch '/card_decks/sort', to: 'card_decks#sort'
+  resources :decks do
+    member do
+      patch :next_card, as: :next_card_in
+      patch :previous_card, as: :previous_card_in
+    end
+  end
+
+  resources :card_decks, only: [:create, :destroy] do
+    collection do
+      patch :sort
+    end
+  end
 
   %w( 404 422 500 503 ).each do |code|
-    get code, :to => "static_pages#error", :code => code
+    get code, to: "static_pages#error", code: code
   end
 end
