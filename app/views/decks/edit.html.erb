@@ -10,7 +10,9 @@
 
       <div class="field">
         <%= f.label "Front of card shows" %><br/>
-        <%= f.select :start_with, options_for_select(@start_with_options, @deck.start_with) %>
+        <div class="select is-small">
+          <%= f.select :start_with, options_for_select(@start_with_options, @deck.start_with) %>
+        </div>
       </div>
 
       <div class="actions">
@@ -30,7 +32,7 @@
           <th class="edit-column">Delete</th>
         </tr>
       </thead>
-      <tbody data-controller="sortable" data-sortable-url="/card_decks/move">
+      <tbody data-controller="sortable" data-sortable-url="/card_decks/sort">
         <%= render(partial: 'cards/sortable_card', collection: @deck.cards, as: :card, locals: { deck: @deck }) %>
       </tbody>
     </table>

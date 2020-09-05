@@ -13,9 +13,35 @@
         <%= f.text_field :japanese, autocomplete: 'off', class: "input" %>
       </div>
 
-      <div class="field">
-        <%= f.label "New audio sample" %><br/>
-        <%= f.file_field :audio_sample %>
+      <% if @card.audio_sample.attached? %>
+        <div class="current-audio-sample">
+          <p>Current audio sample</p>
+          <div class="audio-container">
+            <audio controls>
+              <source src="<%= url_for(@card.audio_sample) %>" type="audio/mpeg">
+              Your browser does not support the audio tag.
+            </audio>
+            <%= link_to(delete_audio_sample_path(@card), class: "has-text-link delete-audio-sample-button", data: { confirm: "Are you sure you want to delete this audio sample? This action is permanent and cannot be undone." }, method: :delete, remote: true ) do %>
+              <span class="icon is-small">
+                <i class="fas fa-trash"></i>
+              </span>
+            <% end %>
+          </div>
+        </div>
+      <% end %>
+
+      <div class="field audio-sample-upload">
+        <div class="file is-small">
+          <label class="file-label">
+            <%= f.file_field :audio_sample, class: "file-input" %>
+            <span class="file-cta">
+              <span class="file-icon">
+                <i class="fas fa-upload"></i>
+              </span>
+              <span class="file-label">Upload a new audio sample...</span>
+            </span>
+          </label>
+        </div>
       </div>
 
       <div class="actions">

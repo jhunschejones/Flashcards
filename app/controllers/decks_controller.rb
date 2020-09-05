@@ -2,11 +2,13 @@ class DecksController < ApplicationController
   before_action :set_deck, only: [:show, :edit, :update, :destroy, :next_card]
 
   def index
-    @decks = Deck.all
+    @decks = Deck.order(created_at: :desc)
   end
 
   def show
     @current_card = Card.find_or_set_current_card_for(deck: @deck)
+    @all_decks = Deck.order(created_at: :desc)
+    @moveable_decks = @all_decks - Array(@deck)
   end
 
   def new
@@ -56,7 +58,7 @@ class DecksController < ApplicationController
 
     unless deck.cards.blank? || deck.cards.all? { |card| card.audio_sample.attached? }
       valid_values.delete("audio_sample")
-      flash[:notice] = "Some cards in this deck are missing an audio sample"
+      # flash[:notice] = "Some cards in this deck are missing an audio sample"
     end
 
     valid_values.map do |start_with_value|

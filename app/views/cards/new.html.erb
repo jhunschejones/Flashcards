@@ -13,14 +13,25 @@
         <%= f.text_field :japanese, autocomplete: 'off', class: "input" %>
       </div>
 
-      <div class="field">
-        <%= f.label :audio_sample %><br/>
-        <%= f.file_field :audio_sample %>
+      <div class="field audio-sample-upload">
+        <div class="file is-small">
+          <label class="file-label">
+            <%= f.file_field :audio_sample, class: "file-input" %>
+            <span class="file-cta">
+              <span class="file-icon">
+                <i class="fas fa-upload"></i>
+              </span>
+              <span class="file-label">Upload audio sample...</span>
+            </span>
+          </label>
+        </div>
       </div>
 
       <div class="field">
         <%= f.label "Create in deck" %><br/>
-        <%= f.select :deck_id, options_from_collection_for_select(@decks, "id", "name"), include_blank: true %>
+        <div class="select is-small">
+          <%= f.select :deck_id, options_from_collection_for_select(@decks, "id", "name"), prompt: "Choose deck..." %>
+        </div>
       </div>
 
       <div class="actions">

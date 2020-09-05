@@ -50,8 +50,27 @@
   }
 }
 
+.audio-sample-upload {
+  margin-top: 15px;
+}
+
 .edit-resource {
+  .current-audio-sample {
+    display: flex;
+    flex-direction: column;
+    .audio-container {
+      display: flex;
+      flex-direction: row;
+      align-items: center;
+      .delete-audio-sample-button {
+        margin-left: 10px;
+      }
+    }
+  }
   .decks-list {
+    margin-top: 40px;
+    width: 100%;
+    max-width: 700px;
     .title {
       font-size: 1.6rem;
       font-weight: 700;
@@ -59,9 +78,6 @@
       margin-top: 10px;
       margin-bottom: 10px;
     }
-    margin-top: 40px;
-    width: 100%;
-    max-width: 700px;
     .edit-column,
     .included-in-deck-column {
       width: 60px;

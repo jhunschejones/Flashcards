@@ -10,7 +10,9 @@
 
       <div class="field">
         <%= f.label "Front of card shows" %><br/>
-        <%= f.select :start_with, options_for_select(@start_with_options, @deck.start_with) %>
+        <div class="select is-small">
+          <%= f.select :start_with, options_for_select(@start_with_options, @deck.start_with) %>
+        </div>
       </div>
 
       <div class="actions">
