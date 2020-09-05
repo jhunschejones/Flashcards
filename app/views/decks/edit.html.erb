@@ -15,6 +15,13 @@
         </div>
       </div>
 
+      <div class="field">
+        <label class="checkbox">
+          <%= f.check_box :is_randomized, class: "randomized-checkbox" %>
+          Randomized
+        </label>
+      </div>
+
       <div class="actions">
         <%= f.submit "Update", class: "button is-info" %>
         <%= link_to "Back", deck_path(@deck), class: "button is-info is-outlined" %>

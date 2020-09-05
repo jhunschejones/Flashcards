@@ -57,7 +57,7 @@ class DecksController < ApplicationController
   private
 
   def deck_params
-    params.require(:deck).permit(:name, :start_with)
+    params.require(:deck).permit(:name, :start_with, :is_randomized)
   end
 
   def set_deck

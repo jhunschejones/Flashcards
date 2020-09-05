@@ -106,3 +106,13 @@
     }
   }
 }
+
+label.checkbox {
+  display: flex;
+  align-items: center;
+  .randomized-checkbox {
+    width: 15px;
+    height: 15px;
+    margin-right: 6px;
+  }
+}

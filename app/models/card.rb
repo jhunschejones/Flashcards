@@ -16,12 +16,21 @@ class Card < ApplicationRecord
       current_card_deck = CardDeck.find_or_set_current_card_deck(deck: deck)
       return unless current_card_deck.present?
 
-      next_card_deck = CardDeck.find_by(
+      if deck.card_decks.remaining.size.zero?
+        deck.card_decks.where(status: CardDeck::COMPLETED_CARD).update(status: "")
+      end
+
+      if deck.is_randomized?
+        next_card_deck = deck.card_decks.remaining.sample
+      end
+
+      next_card_deck ||= CardDeck.find_by(
         position: current_card_deck.position.next,
         deck_id: current_card_deck.deck_id
       ) || deck.card_decks.first
 
-      current_card_deck.update(status: "")
+      CardDeck.where(status: CardDeck::PREVIOUS_CARD).update(status: CardDeck::COMPLETED_CARD)
+      current_card_deck.update(status: CardDeck::PREVIOUS_CARD)
       next_card_deck.update(status: CardDeck::CURRENT_CARD)
 
       next_card_deck.card
@@ -33,11 +42,7 @@ class Card < ApplicationRecord
       current_card_deck = CardDeck.find_or_set_current_card_deck(deck: deck)
       return unless current_card_deck.present?
 
-      previous_card_deck = CardDeck.find_by(
-        position: current_card_deck.position - 1,
-        deck_id: current_card_deck.deck_id
-      ) || deck.card_decks.last
-
+      previous_card_deck = CardDeck.find_previous(deck: deck, current_card_deck: current_card_deck)
       current_card_deck.update(status: "")
       previous_card_deck.update(status: CardDeck::CURRENT_CARD)
 
