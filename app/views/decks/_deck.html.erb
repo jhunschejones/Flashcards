@@ -1,20 +1,4 @@
 <tr class="deck-id-<%= deck.id %>" data-controller="card-deck">
-  <% if @card.present? %>
-    <td class="included-in-deck-cell">
-      <% @card_deck = @card.card_decks.detect { |cg| cg.deck_id == deck.id } %>
-      <% if @card_deck.present? %>
-        <%= form_with(model: @card_deck, url: card_deck_path(@card_deck), method: "delete", data: { target: "card-deck.form" }) do |f| %>
-          <%= f.check_box :included, data: { action: "change->card-deck#toggle" }, checked: true %>
-        <% end %>
-      <% else %>
-        <%= form_with(model: CardDeck.new, url: card_decks_path, method: "post", data: { target: "card-deck.form"}) do |f| %>
-          <%= f.check_box :included, data: { action: "change->card-deck#toggle" }, checked: false %>
-          <%= f.hidden_field :card_id, value: @card.id %>
-          <%= f.hidden_field :deck_id, value: deck.id %>
-        <% end %>
-      <% end %>
-    </td>
-  <% end %>
   <td><%= link_to(deck.name, deck_path(deck), class: "has-text-link") %></td>
   <td class="edit-deck-cell">
     <%= link_to(edit_deck_path(deck), class: "has-text-link") do %>
