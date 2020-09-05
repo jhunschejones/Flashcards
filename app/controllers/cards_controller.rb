@@ -25,6 +25,9 @@ class CardsController < ApplicationController
       end
     end
     redirect_to card_path(@card)
+  rescue ActiveRecord::RecordNotUnique
+    flash[:alert] = "A card already exists for: '#{card_params[:english]}'"
+    redirect_to new_card_path
   end
 
   def update
