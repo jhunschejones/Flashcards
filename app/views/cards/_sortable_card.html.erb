@@ -1,4 +1,4 @@
-<tr data-card-id="<%= card.id %>">
+<tr data-card-id="<%= card.id %>" data-deck-id="<%= @deck.id %>">
   <td><%= link_to(card.english, card_path(card), class: "has-text-link") %></td>
   <td class="edit-card-cell">
     <%= link_to(edit_card_path(card), class: "has-text-link") do %>
