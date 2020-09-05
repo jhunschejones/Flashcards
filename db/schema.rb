@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2020_09_01_155600) do
+ActiveRecord::Schema.define(version: 2020_09_05_212714) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -51,10 +51,10 @@ ActiveRecord::Schema.define(version: 2020_09_01_155600) do
 
   create_table "cards", force: :cascade do |t|
     t.text "english", null: false
-    t.text "japanese", null: false
+    t.text "kana", null: false
     t.datetime "created_at", precision: 6, null: false
     t.datetime "updated_at", precision: 6, null: false
-    t.index ["english", "japanese"], name: "index_cards_on_english_and_japanese", unique: true
+    t.index ["english", "kana"], name: "index_cards_on_english_and_kana", unique: true
   end
 
   create_table "decks", force: :cascade do |t|

@@ -1,7 +1,7 @@
 <div class="card-details-container">
   <div class="card-details-card">
     <div class="english-text"><%= @card.english %></div>
-    <div class="japanese-text"><%= @card.japanese %></div>
+    <div class="kana-text"><%= @card.kana %></div>
     <% if @card.audio_sample.attached? %>
       <div class="audio-sample">
         <audio controls>

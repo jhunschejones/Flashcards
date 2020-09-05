@@ -4,7 +4,7 @@ class Card < ApplicationRecord
   has_one_attached :audio_sample
 
   validates :english, presence: true
-  validates :japanese, presence: true
+  validates :kana, presence: true
 
   def self.find_or_set_current_card_for(deck:)
     return if deck.cards.blank?

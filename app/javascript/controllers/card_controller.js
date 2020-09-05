@@ -1,7 +1,7 @@
 import { Controller } from "stimulus"
 
 export default class extends Controller {
-  static targets = [ "englishText", "japaneseText", "audioSample", "loader"]
+  static targets = [ "englishText", "kanaText", "audioSample", "loader"]
 
   initialize() {
     this.isFlipped = false;
@@ -21,7 +21,7 @@ export default class extends Controller {
   prepareForNextCard() {
     // Prevent flashing by blanking out current card content
     this.englishTextTarget.innerHTML = "";
-    this.japaneseTextTarget.innerHTML = "";
+    this.kanaTextTarget.innerHTML = "";
     this.audioSampleTarget.innerHTML = "";
     this.loaderTarget.classList.add("is-active");
 
@@ -36,21 +36,21 @@ export default class extends Controller {
     switch(this.data.get("startWith")) {
       case "english":
         this.englishTextTarget.style.display = "block";
-        this.japaneseTextTarget.style.display = "none";
+        this.kanaTextTarget.style.display = "none";
         if (this.hasAudioSampleTarget) {
           this.audioSampleTarget.style.display = "none";
         }
         break;
       case "audio_sample":
         this.englishTextTarget.style.display = "none";
-        this.japaneseTextTarget.style.display = "none";
+        this.kanaTextTarget.style.display = "none";
         if (this.hasAudioSampleTarget) {
           this.audioSampleTarget.style.display = "block";
         }
         break;
       default:
         this.englishTextTarget.style.display = "none";
-        this.japaneseTextTarget.style.display = "block";
+        this.kanaTextTarget.style.display = "block";
         if (this.hasAudioSampleTarget) {
           this.audioSampleTarget.style.display = "none";
         }
@@ -61,21 +61,21 @@ export default class extends Controller {
     switch(this.data.get("startWith")) {
       case "english":
         this.englishTextTarget.style.display = "none";
-        this.japaneseTextTarget.style.display = "block";
+        this.kanaTextTarget.style.display = "block";
         if (this.hasAudioSampleTarget) {
           this.audioSampleTarget.style.display = "block";
         }
         break;
       case "audio_sample":
         this.englishTextTarget.style.display = "block";
-        this.japaneseTextTarget.style.display = "block";
+        this.kanaTextTarget.style.display = "block";
         if (this.hasAudioSampleTarget) {
           this.audioSampleTarget.style.display = "none";
         }
         break;
       default:
         this.englishTextTarget.style.display = "block";
-        this.japaneseTextTarget.style.display = "none";
+        this.kanaTextTarget.style.display = "none";
         if (this.hasAudioSampleTarget) {
           this.audioSampleTarget.style.display = "block";
         }

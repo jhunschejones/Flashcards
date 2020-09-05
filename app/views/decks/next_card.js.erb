@@ -1,12 +1,12 @@
 var loader = document.querySelector('.loader-wrapper');
 var englishText = document.querySelector(".english-text");
-var japaneseText = document.querySelector(".japanese-text");
+var kanaText = document.querySelector(".kana-text");
 var previousAudioSampleAudio = document.querySelector(".audio-sample audio");
 var moveDecksForm = document.querySelector(".move-decks-form")
 
 loader.classList.remove("is-active");
 englishText.innerHTML = "<%= @current_card.english %>"
-japaneseText.innerHTML = "<%= @current_card.japanese %>"
+kanaText.innerHTML = "<%= @current_card.kana %>"
 
 if (previousAudioSampleAudio) {
   previousAudioSampleAudio.parentElement.removeChild(previousAudioSampleAudio);

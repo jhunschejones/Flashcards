@@ -2,7 +2,7 @@ class CardsController < ApplicationController
   before_action :set_card, only: [:show, :edit, :update, :destroy, :move_decks, :delete_audio_sample]
 
   def index
-    @cards = Card.order(created_at: :desc)
+    @cards = Card.order(english: :asc)
   end
 
   def show
@@ -64,7 +64,7 @@ class CardsController < ApplicationController
   private
 
   def card_params
-    params.require(:card).permit(:english, :japanese, :audio_sample)
+    params.require(:card).permit(:english, :kana, :audio_sample)
   end
 
   def set_card
