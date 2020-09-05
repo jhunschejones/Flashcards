@@ -19,6 +19,7 @@ class Card < ApplicationRecord
   def self.set_next_card_for(deck:)
     ActiveRecord::Base.transaction do
       current_card = find_or_set_current_card_for(deck: deck)
+      return unless current_card.present?
 
       card_ids = deck.cards.map(&:id)
       next_card_id = card_ids[card_ids.find_index(current_card.id) + 1] || card_ids.first

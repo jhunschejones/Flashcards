@@ -1,8 +1,8 @@
 class CardsController < ApplicationController
-  before_action :set_card, only: [:show, :edit, :update, :destroy]
+  before_action :set_card, only: [:show, :edit, :update, :destroy, :move_decks, :delete_audio_sample]
 
   def index
-    @cards = Card.all
+    @cards = Card.order(created_at: :desc)
   end
 
   def show
@@ -10,11 +10,11 @@ class CardsController < ApplicationController
 
   def new
     @card = Card.new
-    @decks = Deck.all
+    @decks = Deck.order(created_at: :desc)
   end
 
   def edit
-    @decks = Deck.all
+    @decks = Deck.order(created_at: :desc)
   end
 
   def create
@@ -35,6 +35,27 @@ class CardsController < ApplicationController
   def destroy
     @card.destroy
     respond_to(&:js)
+  end
+
+  def move_decks
+    @current_deck = Deck.find(params[:old_deck_id])
+    @new_deck = Deck.find(params[:new_deck_id])
+
+    ActiveRecord::Base.transaction do
+      CardDeck.find_by(card: @card, deck_id: params[:old_deck_id]).destroy
+      # Attempt to create the new card_deck, which may already exist
+      CardDeck.find_or_create_by(card: @card, deck_id: params[:new_deck_id])
+    end
+
+    @current_card = Card.set_next_card_for(deck: @current_deck)
+    return redirect_to(deck_path(@current_deck)) unless @current_card.present?
+
+    respond_to { |format| format.js { render '/decks/next_card' } }
+  end
+
+  def delete_audio_sample
+    @card.audio_sample.purge
+    redirect_to edit_card_path(@card)
   end
 
   private

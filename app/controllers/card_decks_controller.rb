@@ -10,7 +10,7 @@ class CardDecksController < ApplicationController
     CardDeck.destroy(params["id"])
   end
 
-  def move
+  def sort
     @card_deck = CardDeck.find_by(card_id: params["card_id"], deck_id: params["deck_id"])
     @card_deck.insert_at(params[:position].to_i)
   end
