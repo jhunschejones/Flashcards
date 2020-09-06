@@ -1,5 +1,7 @@
 <tr data-card-id="<%= card.id %>">
   <td><%= link_to(card.english, card_path(card), class: "has-text-link") %></td>
+  <td class="edit-card-cell"><%= card.decks.size %></td>
+  <td class="edit-card-cell"><%= card.review_count %></td>
   <td class="edit-card-cell">
     <%= link_to(edit_card_path(card), class: "has-text-link") do %>
       <span class="icon is-small">
