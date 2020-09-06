@@ -7,7 +7,7 @@ class DecksController < ApplicationController
 
   def show
     @current_card = Card.find_or_set_current_card_for(deck: @deck)
-    @current_card.increment!(:review_count, touch: true)
+    @current_card&.increment!(:review_count, touch: true)
     @all_decks = Deck.order(created_at: :desc)
     @moveable_decks = @all_decks - Array(@deck)
   end

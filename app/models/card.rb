@@ -16,18 +16,15 @@ class Card < ApplicationRecord
       current_card_deck = CardDeck.find_or_set_current_card_deck(deck: deck)
       return unless current_card_deck.present?
 
-      if deck.card_decks.remaining.size.zero?
-        deck.card_decks.where(status: CardDeck::COMPLETED_CARD).update(status: "")
+      next_card_deck = CardDeck.find_next(deck: deck, current_card_deck: current_card_deck)
+
+      if deck.is_randomized? && (next_card_deck == deck.card_decks.first)
+        deck.shuffle
+        deck.card_decks.reload
+        next_card_deck = deck.card_decks.first
       end
 
-      if deck.is_randomized?
-        next_card_deck = deck.card_decks.remaining.sample
-      end
-
-      next_card_deck ||= CardDeck.find_next(deck: deck, current_card_deck: current_card_deck)
-
-      CardDeck.where(status: CardDeck::PREVIOUS_CARD).update(status: CardDeck::COMPLETED_CARD)
-      current_card_deck.update(status: CardDeck::PREVIOUS_CARD)
+      current_card_deck.update(status: nil)
       next_card_deck.update(status: CardDeck::CURRENT_CARD)
 
       next_card_deck.card
@@ -40,7 +37,7 @@ class Card < ApplicationRecord
       return unless current_card_deck.present?
 
       previous_card_deck = CardDeck.find_previous(deck: deck, current_card_deck: current_card_deck)
-      current_card_deck.update(status: "")
+      current_card_deck.update(status: nil)
       previous_card_deck.update(status: CardDeck::CURRENT_CARD)
 
       previous_card_deck.card
