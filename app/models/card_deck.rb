@@ -11,11 +11,12 @@ class CardDeck < ApplicationRecord
   COMPLETED_CARD = "completed".freeze
 
   def self.find_or_set_current_card_deck(deck:)
-    current_card_deck = find_by(deck: deck, status: CURRENT_CARD)
+    current_card_deck = find_by(deck: deck, status: CURRENT_CARD) || find_by(deck: deck, status: PREVIOUS_CARD)
+
     unless current_card_deck.present?
       current_card_deck = deck.card_decks.first
-      current_card_deck.update(status: CURRENT_CARD)
     end
+    current_card_deck.update(status: CURRENT_CARD)
     current_card_deck
   end
 
@@ -26,5 +27,12 @@ class CardDeck < ApplicationRecord
         deck_id: current_card_deck.deck_id
       ) || deck.card_decks.last
     end
+  end
+
+  def self.find_next(deck:, current_card_deck:)
+    find_by(
+      position: current_card_deck.position.next,
+      deck_id: current_card_deck.deck_id
+    ) || deck.card_decks.first
   end
 end

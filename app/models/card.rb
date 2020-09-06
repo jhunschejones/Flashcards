@@ -24,10 +24,7 @@ class Card < ApplicationRecord
         next_card_deck = deck.card_decks.remaining.sample
       end
 
-      next_card_deck ||= CardDeck.find_by(
-        position: current_card_deck.position.next,
-        deck_id: current_card_deck.deck_id
-      ) || deck.card_decks.first
+      next_card_deck ||= CardDeck.find_next(deck: deck, current_card_deck: current_card_deck)
 
       CardDeck.where(status: CardDeck::PREVIOUS_CARD).update(status: CardDeck::COMPLETED_CARD)
       current_card_deck.update(status: CardDeck::PREVIOUS_CARD)

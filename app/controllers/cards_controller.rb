@@ -44,15 +44,23 @@ class CardsController < ApplicationController
     @current_deck = Deck.find(params[:old_deck_id])
     @new_deck = Deck.find(params[:new_deck_id])
 
-    ActiveRecord::Base.transaction do
-      CardDeck.find_by(card: @card, deck_id: params[:old_deck_id]).destroy
-      # Attempt to create the new card_deck, which may already exist
-      CardDeck.find_or_create_by(card: @card, deck_id: params[:new_deck_id])
-    end
+    @current_card =
+      ActiveRecord::Base.transaction do
+        # Attempt to create the new card_deck, which may already exist
+        CardDeck.find_or_create_by(card: @card, deck_id: params[:new_deck_id])
+        destroyed_card_deck = CardDeck.find_by(card: @card, deck_id: params[:old_deck_id]).destroy
 
-    @current_card = Card.next_card_in(deck: @current_deck)
+        # After a card_deck is destroyed, position values cascade such that the old
+        # position value should now have been re-assigned to the next card_deck
+        current_card_deck = CardDeck.find_by(
+          position: destroyed_card_deck.position,
+          deck_id: destroyed_card_deck.deck_id
+        ) || deck.card_decks.first
+        current_card_deck.update(status: CardDeck::CURRENT_CARD)
+        current_card_deck.card
+      end
+
     return redirect_to(deck_path(@current_deck)) unless @current_card.present?
-
     respond_to { |format| format.js { render '/decks/next_card' } }
   end
 
