@@ -18,6 +18,8 @@ Rails.application.routes.draw do
     member do
       patch :next_card, as: :next_card_in
       patch :previous_card, as: :previous_card_in
+      get :sort_cards
+      patch :take_cards
     end
   end
 

@@ -29,19 +29,25 @@
     <% end %>
   </div>
 
-  <div class="cards-list">
-    <h2 class="title is-4">Re-order cards in deck</h2>
-    <table class="table is-fullwidth is-hoverable is-striped">
-      <thead>
-        <tr>
-          <th>English</th>
-          <th class="edit-column">Edit</th>
-          <th class="edit-column">Delete</th>
-        </tr>
-      </thead>
-      <tbody data-controller="sortable" data-sortable-url="/card_decks/sort">
-        <%= render(partial: 'cards/sortable_card', collection: @deck.cards, as: :card, locals: { deck: @deck }) %>
-      </tbody>
-    </table>
+  <div class="more-deck-actions">
+    <h2 class="title is-4">Manage cards</h2>
+    <p class="has-text-grey-light current-card-count">
+      (<%= @deck.card_decks.size %> cards currently in this deck)
+    </p>
+    <%= form_tag(take_cards_deck_path(@deck), method: :patch, class: "next-card-form") do %>
+      <div class="field">
+        <label>Number of cards</label>
+        <input name="number_of_cards" type="text" class="input" autocomplete="off" />
+      </div>
+      <div class="select is-small">
+        <%= select_tag :take_from_deck_id, options_from_collection_for_select(@availible_decks, "id", "name"), prompt: "Take from deck..." %>
+      </div>
+      <div class="select is-small">
+        <%= select_tag :move_to_deck_id, options_from_collection_for_select(@availible_decks, "id", "name"), prompt: "Move to deck..." %>
+      </div>
+      <br/><br/>
+      <%= submit_tag "Move cards", data: { confirm: "Are you sure you want move cards between decks? This action is permanent and cannot be undone." }, class: "button is-info" %>
+      <%= link_to("Sort cards", sort_cards_deck_path(@deck), class: "button is-info is-outlined") %>
+    <% end %>
   </div>
 </div>

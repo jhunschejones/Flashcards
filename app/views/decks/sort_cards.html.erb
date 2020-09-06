@@ -1,0 +1,20 @@
+<div class="sort-cards">
+  <div class="cards-list">
+    <div class="header-container">
+      <h2 class="title is-4">Re-order cards in deck</h2>
+      <%= link_to("Back", :back, class: "back-button button is-info is-outlined is-small") %>
+    </div>
+    <table class="table is-fullwidth is-hoverable is-striped">
+      <thead>
+        <tr>
+          <th>English</th>
+          <th class="edit-column">Edit</th>
+          <th class="edit-column">Delete</th>
+        </tr>
+      </thead>
+      <tbody data-controller="sortable" data-sortable-url="/card_decks/sort">
+        <%= render(partial: 'cards/sortable_card', collection: @deck.cards, as: :card, locals: { deck: @deck }) %>
+      </tbody>
+    </table>
+  </div>
+</div>
