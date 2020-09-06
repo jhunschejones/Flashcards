@@ -2,12 +2,12 @@ class DecksController < ApplicationController
   before_action :set_deck, only: [:show, :edit, :update, :destroy, :next_card, :previous_card]
 
   def index
-    @decks = Deck.order(created_at: :desc)
+    @decks = Deck.includes(:card_decks).order(created_at: :desc)
   end
 
   def show
     @current_card = Card.find_or_set_current_card_for(deck: @deck)
-    @current_card.increment!(:review_count)
+    @current_card.increment!(:review_count, touch: true)
     @all_decks = Deck.order(created_at: :desc)
     @moveable_decks = @all_decks - Array(@deck)
   end
@@ -38,7 +38,7 @@ class DecksController < ApplicationController
 
   def next_card
     next_card = Card.next_card_in(deck: @deck)
-    next_card.increment!(:review_count)
+    next_card.increment!(:review_count, touch: true)
     respond_to do |format|
       format.html { redirect_to deck_path(@deck) }
       format.js { @current_card = next_card }
@@ -47,7 +47,7 @@ class DecksController < ApplicationController
 
   def previous_card
     previous_card = Card.previous_card_in(deck: @deck)
-    previous_card.increment!(:review_count)
+    previous_card.increment!(:review_count, touch: true)
     respond_to do |format|
       format.html { redirect_to deck_path(@deck) }
       format.js {
