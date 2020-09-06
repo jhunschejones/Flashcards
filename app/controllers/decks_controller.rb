@@ -7,6 +7,7 @@ class DecksController < ApplicationController
 
   def show
     @current_card = Card.find_or_set_current_card_for(deck: @deck)
+    @current_card.increment!(:review_count)
     @all_decks = Deck.order(created_at: :desc)
     @moveable_decks = @all_decks - Array(@deck)
   end
@@ -37,6 +38,7 @@ class DecksController < ApplicationController
 
   def next_card
     next_card = Card.next_card_in(deck: @deck)
+    next_card.increment!(:review_count)
     respond_to do |format|
       format.html { redirect_to deck_path(@deck) }
       format.js { @current_card = next_card }
@@ -45,6 +47,7 @@ class DecksController < ApplicationController
 
   def previous_card
     previous_card = Card.previous_card_in(deck: @deck)
+    previous_card.increment!(:review_count)
     respond_to do |format|
       format.html { redirect_to deck_path(@deck) }
       format.js {

@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2020_09_05_223745) do
+ActiveRecord::Schema.define(version: 2020_09_06_040411) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -54,6 +54,7 @@ ActiveRecord::Schema.define(version: 2020_09_05_223745) do
     t.text "kana", null: false
     t.datetime "created_at", precision: 6, null: false
     t.datetime "updated_at", precision: 6, null: false
+    t.bigint "review_count", default: 0
     t.index ["english", "kana"], name: "index_cards_on_english_and_kana", unique: true
   end
 
