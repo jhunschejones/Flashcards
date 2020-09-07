@@ -51,10 +51,10 @@
       </div>
       <div class="move-card-controls">
         <%= form_tag(move_decks_card_path(@current_card.id), method: :patch, class: "move-decks-form", remote: true) do %>
-          <%= submit_tag "Move card", class: "button is-danger is-outlined is-small", data: { action: "click->card#prepareForNextCard" } %>
+          <%= submit_tag "Move card", class: "button is-danger is-outlined move-card-button", data: { action: "click->card#prepareForMoveCard" } %>
           <%= hidden_field_tag :old_deck_id, @deck.id %>
 
-          <div class="select is-small">
+          <div class="select">
             <%= select_tag :new_deck_id, options_from_collection_for_select(@moveable_decks, "id", "name"), prompt: "Choose new deck...", class: "new-deck-select" %>
           </div>
         <% end %>

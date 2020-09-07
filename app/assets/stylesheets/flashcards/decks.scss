@@ -63,7 +63,14 @@
       }
     }
     .move-card-controls {
-      margin-top: 40px;
+      margin-top: 50px;
+      .select {
+        select { padding: 6px 32px 6px 10px; }
+        &::after { right: 12px; }
+      }
+      .move-card-button {
+        padding: 7px 12px;
+      }
     }
   }
 }
