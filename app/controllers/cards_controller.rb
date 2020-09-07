@@ -1,5 +1,5 @@
 class CardsController < ApplicationController
-  before_action :set_card, only: [:show, :edit, :update, :destroy, :move_decks, :delete_audio_sample]
+  before_action :set_card, except: [:index, :new, :create]
 
   def index
     @cards = Card.includes(:card_decks).order(english: :asc)
