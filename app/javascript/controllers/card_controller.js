@@ -32,6 +32,14 @@ export default class extends Controller {
     }
   }
 
+  prepareForMoveCard() {
+    // Don't flip the card and start the spinner when move card button
+    // is pressed unless the user has selected a new deck
+    if (document.querySelector(".new-deck-select").value != "") {
+      this.prepareForNextCard();
+    }
+  }
+
   showFrontOfCard() {
     switch(this.data.get("startWith")) {
       case "english":
