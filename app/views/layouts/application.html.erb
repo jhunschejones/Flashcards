@@ -57,7 +57,7 @@
 
         <div class="navbar-end"></div>
           <% if @current_user.present? %>
-            <%= link_to('Log out', logout_path, method: :delete, class: "navbar-item button is-small is-danger logout-button") %>
+            <%= link_to('Log out', logout_path, method: :delete, class: "navbar-item button is-small is-danger is-outlined logout-button") %>
           <% end %>
       </div>
     </nav>
