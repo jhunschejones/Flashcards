@@ -20,7 +20,7 @@ Rails.application.configure do
 
   # Disable serving static files from the `/public` folder by default since
   # Apache or NGINX already handles this.
-  config.public_file_server.enabled = ENV['RAILS_SERVE_STATIC_FILES'].present?
+  config.public_file_server.enabled = ENV["RAILS_SERVE_STATIC_FILES"].present?
 
   # Compress CSS using a preprocessor.
   config.assets.css_compressor = :sass
@@ -57,7 +57,7 @@ Rails.application.configure do
 
   # Use a different cache store in production.
   config.cache_store = :redis_cache_store, {
-    url: ENV['REDIS_URL'],
+    url: ENV["REDIS_URL"],
     expires_in: 5.days,
     size: 25.megabytes
   }
@@ -118,4 +118,6 @@ Rails.application.configure do
 
   # Only affects displayed timezone, times are still stored in the DB as UTC
   config.time_zone = "Pacific Time (US & Canada)"
+
+  Rails.application.routes.default_url_options[:host] = "flashcards.joshuahunschejones.com"
 end
