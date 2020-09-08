@@ -78,14 +78,10 @@
 .edit-resource {
   .current-audio-sample {
     display: flex;
-    flex-direction: column;
-    .audio-container {
-      display: flex;
-      flex-direction: row;
-      align-items: center;
-      .delete-audio-sample-button {
-        margin-left: 10px;
-      }
+    flex-direction: row;
+    align-items: center;
+    .play-audio-sample-button {
+      margin: 0px 10px;
     }
   }
   .decks-list {
