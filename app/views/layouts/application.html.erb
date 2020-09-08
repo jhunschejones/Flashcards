@@ -83,12 +83,14 @@
       <%= yield %>
     </div>
 
-    <script>
-      if ('serviceWorker' in navigator) {
-        window.addEventListener('load', () => {
-          navigator.serviceWorker.register('/service-worker.js');
-        });
-      }
-    </script>
+    <% if ENV['SERVICE_WORKER_ENABLED'] %>
+      <script>
+        if ('serviceWorker' in navigator) {
+          window.addEventListener('load', () => {
+            navigator.serviceWorker.register('/service-worker.js');
+          });
+        }
+      </script>
+    <% end %>
   </body>
 </html>

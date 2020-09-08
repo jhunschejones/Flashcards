@@ -34,7 +34,7 @@ workbox.routing.registerRoute(
     cacheName: 'audio',
     plugins: [
       new workbox.expiration.ExpirationPlugin({
-        maxAgeSeconds: 7 * 24 * 60 * 60, // 7 Days
+        maxAgeSeconds: 10800, // 3 hours
         // Automatically cleanup if quota is exceeded.
         purgeOnQuotaError: true,
       }),
