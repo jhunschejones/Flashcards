@@ -18,7 +18,7 @@
           <p>Current audio sample</p>
           <div class="audio-container">
             <audio controls>
-              <source src="<%= url_for(@card.audio_sample) %>" type="audio/mpeg">
+              <source src="<%= rails_blob_path(@card.audio_sample, disposition: "attachment") %>" type="audio/mpeg">
               Your browser does not support the audio tag.
             </audio>
             <%= link_to(delete_audio_sample_card_path(@card), class: "has-text-link delete-audio-sample-button", data: { confirm: "Are you sure you want to delete this audio sample? This action is permanent and cannot be undone." }, method: :delete, remote: true ) do %>
