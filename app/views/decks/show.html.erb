@@ -18,10 +18,7 @@
         </div>
         <div class="audio-sample" data-target="card.audioSample">
           <% if @current_card.audio_sample.attached? %>
-            <audio controls>
-              <source src="<%= url_for(@current_card.audio_sample) %>" type="audio/mpeg">
-              Your browser does not support the audio tag.
-            </audio>
+            <%= render(template: 'decks/_play_audio_sample_button', locals: { current_card: @current_card }) %>
           <% end %>
         </div>
         <div class="loader-wrapper" data-target="card.loader">

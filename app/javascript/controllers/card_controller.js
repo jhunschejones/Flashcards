@@ -8,6 +8,14 @@ export default class extends Controller {
     this.showFrontOfCard();
   }
 
+  playSong(event) {
+    event.preventDefault();
+    event.stopPropagation();
+    const song = event.currentTarget;
+    song.audio = new Audio(song.href);
+    song.audio.play();
+  }
+
   flip() {
     if(this.isFlipped) {
       this.isFlipped = false;
