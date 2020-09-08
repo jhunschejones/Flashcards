@@ -19,7 +19,7 @@
         <div class="audio-sample" data-target="card.audioSample">
           <% if @current_card.audio_sample.attached? %>
             <audio controls>
-              <source src="<%= rails_blob_path(@current_card.audio_sample, disposition: "attachment") %>" type="audio/mpeg">
+              <source src="<%= url_for(@current_card.audio_sample) %>" type="audio/mpeg">
               Your browser does not support the audio tag.
             </audio>
           <% end %>
