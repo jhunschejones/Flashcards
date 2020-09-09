@@ -4,8 +4,9 @@
 # model remove the '{}' from the fixture names and add the columns immediately
 # below each fixture, per the syntax in the comments below
 #
-one: {}
-# column: value
-#
-two: {}
-# column: value
+carl:
+  name_ciphertext: <%= User.generate_name_ciphertext("Carl Fox").inspect %>
+  name_bidx: <%= User.generate_name_bidx("Carl Fox").inspect %>
+  email_ciphertext: <%= User.generate_email_ciphertext("carl@dafox.com").inspect %>
+  email_bidx: <%= User.generate_email_bidx("carl@dafox.com").inspect %>
+  password_digest: <%= BCrypt::Password.create('secret') %>

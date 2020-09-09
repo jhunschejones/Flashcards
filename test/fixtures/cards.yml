@@ -4,8 +4,53 @@
 # model remove the '{}' from the fixture names and add the columns immediately
 # below each fixture, per the syntax in the comments below
 #
-one: {}
-# column: value
-#
-two: {}
-# column: value
+
+cat:
+  english: cat
+  kana: ねこ
+
+dog:
+  english: dog
+  kana: dog
+
+house:
+  english: house
+  kana: いえ
+
+car:
+  english: car
+  kana: くるま
+
+meat:
+  english: meat
+  kana: にく
+
+fish:
+  english: fish
+  kana: さかな
+
+vegetables:
+  english: vegetables
+  kana: やさい
+
+summer:
+  english: summer
+  kana: なつ
+
+family:
+  english: family
+  kana: かぞく
+
+# ./files/1018.mp3
+foot:
+  english: foot
+  kana: あし
+
+water:
+  english: water
+  kana: みず
+
+# ./files/16038.mp3
+glass:
+  english: glass
+  kana: グラス

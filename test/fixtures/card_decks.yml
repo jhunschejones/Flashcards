@@ -4,8 +4,63 @@
 # model remove the '{}' from the fixture names and add the columns immediately
 # below each fixture, per the syntax in the comments below
 #
-one: {}
-# column: value
-#
-two: {}
-# column: value
+
+cat_study_now:
+  card: cat
+  deck: study_now
+  position: 1
+
+dog_study_now:
+  card: dog
+  deck: study_now
+  position: 2
+
+house_study_now:
+  card: house
+  deck: study_now
+  position: 3
+
+car_study_now:
+  card: car
+  deck: study_now
+  position: 4
+
+meat_study_now:
+  card: meat
+  deck: study_now
+  position: 5
+
+fish_study_now:
+  card: fish
+  deck: study_now
+  position: 6
+
+vegetables_study_now:
+  card: vegetables
+  deck: study_now
+  position: 7
+
+summer_study_now:
+  card: summer
+  deck: study_now
+  position: 8
+
+family_study_now:
+  card: family
+  deck: study_now
+  position: 9
+
+foot_study_now:
+  card: foot
+  deck: study_now
+  position: 10
+
+water_study_now:
+  card: water
+  deck: study_now
+  position: 11
+
+glass_study_now:
+  card: glass
+  deck: study_now
+  position: 12
