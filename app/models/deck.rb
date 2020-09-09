@@ -8,8 +8,13 @@ class Deck < ApplicationRecord
   VALID_START_WITH_VALUES = ["kana", "english", "audio_sample"]
 
   def shuffle
-    new_positions = (1..card_decks.size).to_a.shuffle
-    card_decks.map { |card_deck| card_deck.update(position: new_positions.pop) }
+    # This method suspends the auto-sorting callbacks while I manually change
+    # position values. Without this card_deck positions end up with duplicates
+    # or gaps, breaking the ordered deck functionality.
+    CardDeck.acts_as_list_no_update do
+      new_positions = (1..card_decks.size).to_a.shuffle
+      card_decks.map { |card_deck| card_deck.update(position: new_positions.pop) }
+    end
   end
 
   private
