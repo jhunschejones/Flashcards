@@ -1,7 +1,8 @@
 <a
   href="<%= url_for(current_card.audio_sample) %>"
   class="button is-outlined play-audio-sample-button"
-  data-action="click->card#playSong"
+  data-action="click->card#playAudio"
+  data-target="card.playAudioSampleButton"
 >
   <span class="icon">
     <i class="fas fa-lg fa-volume-up"></i>

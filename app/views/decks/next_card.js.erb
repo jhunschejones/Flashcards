@@ -12,6 +12,8 @@
 
   <% if @current_card.audio_sample.attached? %>
     audioSample.innerHTML = '<%= raw(render(template: "decks/_play_audio_sample_button", locals: { current_card: @current_card }).squish) %>';
+    var playAudioSampleButton = document.querySelector(".play-audio-sample-button");
+    playAudioSampleButton.audio = new Audio(playAudioSampleButton.href);
   <% end %>
 
   document.querySelector(".new-deck-select").value = "";
