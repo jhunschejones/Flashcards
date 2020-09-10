@@ -12,7 +12,7 @@ class CardDeck < ApplicationRecord
     current_card_deck = find_by(deck: deck, status: CURRENT_CARD)
     unless current_card_deck.present?
       current_card_deck = deck.card_decks.first
-      current_card_deck.update(status: CURRENT_CARD)
+      current_card_deck&.update(status: CURRENT_CARD)
     end
     current_card_deck
   end

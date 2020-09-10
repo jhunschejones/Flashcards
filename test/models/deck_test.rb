@@ -15,5 +15,21 @@ class DeckTest < ActiveSupport::TestCase
       deck.shuffle
       assert deck.was_just_shuffled
     end
+
+    it "does not create duplicate card_deck positions" do
+      deck = decks(:study_now)
+      deck.shuffle
+      deck.card_decks.pluck(:position).uniq.size == deck.card_decks.size
+    end
+  end
+
+  describe "validations" do
+    it "is not vaild with unrecognized start_with value" do
+      deck = Deck.new(name: "My new deck", start_with: "space cats")
+      expected_error = {:start_with=>["not included in '[\"kana\", \"english\", \"audio_sample\"]'"]}
+
+      refute deck.valid?
+      assert_equal expected_error, deck.errors.messages
+    end
   end
 end
