@@ -121,6 +121,17 @@
 }
 
 .edit-resource {
+  .edit-deck-form,
+  .shuffle-deck-form {
+    display: inline;
+    .actions {
+      .view-deck-button {
+        margin-right: -1px;
+      }
+      display: inline-block;
+      margin-top: 2px;
+    }
+  }
   .more-deck-actions {
     margin-top: 40px;
     width: 100%;
@@ -134,13 +145,6 @@
     }
     .current-card-count {
       margin-bottom: 10px;
-    }
-    .next-card-form,
-    .shuffle-deck-form {
-      display: inline;
-      .sort-cards-button {
-        margin: 0px 2px;
-      }
     }
   }
 }
