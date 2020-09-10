@@ -5,6 +5,8 @@ class Deck < ApplicationRecord
   validates :name, presence: true
   validate :start_with_valid
 
+  attr_accessor :was_just_shuffled
+
   VALID_START_WITH_VALUES = ["kana", "english", "audio_sample"].freeze
 
   def shuffle
@@ -15,6 +17,7 @@ class Deck < ApplicationRecord
       new_positions = (1..card_decks.size).to_a.shuffle
       card_decks.map { |card_deck| card_deck.update(position: new_positions.pop) }
     end
+    @was_just_shuffled = true
   end
 
   private

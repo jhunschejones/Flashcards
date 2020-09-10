@@ -60,7 +60,12 @@ class CardsController < ApplicationController
 
     @current_card = next_card
     return redirect_to(deck_path(current_deck)) unless next_card.present?
-    respond_to { |format| format.js { render '/decks/next_card' } }
+    respond_to do |format|
+      format.js {
+        @deck = current_deck
+        render '/decks/next_card'
+      }
+    end
   end
 
   def delete_audio_sample

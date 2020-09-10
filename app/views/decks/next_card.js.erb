@@ -19,4 +19,8 @@
   document.querySelector(".new-deck-select").value = "";
   moveDecksForm.action = "<%= move_decks_card_path(@current_card.id) %>";
   editCardButton.href = "<%= edit_card_url(@current_card.id) %>";
+
+  <% if @deck.was_just_shuffled %>
+    alert("The deck was automatically shuffled!");
+  <% end %>
 }());
