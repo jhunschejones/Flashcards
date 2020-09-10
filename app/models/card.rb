@@ -6,6 +6,8 @@ class Card < ApplicationRecord
   validates :english, presence: true
   validates :kana, presence: true
 
+  before_save :trim_text_values
+
   def self.find_or_set_current_card_for(deck:)
     return if deck.cards.blank?
     CardDeck.find_or_set_current_card_deck(deck: deck).card
@@ -42,5 +44,12 @@ class Card < ApplicationRecord
 
       previous_card_deck.card
     end
+  end
+
+  private
+
+  def trim_text_values
+    self.english = self.english.strip
+    self.kana = self.kana.strip
   end
 end
