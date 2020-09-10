@@ -87,6 +87,12 @@ class DecksController < ApplicationController
     end
   end
 
+  def shuffle
+    @deck.shuffle
+    flash[:success] = "Deck shuffled!"
+    redirect_to edit_deck_path(@deck)
+  end
+
   private
 
   def deck_params

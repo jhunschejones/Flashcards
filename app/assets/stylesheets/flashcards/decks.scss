@@ -135,6 +135,13 @@
     .current-card-count {
       margin-bottom: 10px;
     }
+    .next-card-form,
+    .shuffle-deck-form {
+      display: inline;
+      .sort-cards-button {
+        margin: 0px 2px;
+      }
+    }
   }
 }
 

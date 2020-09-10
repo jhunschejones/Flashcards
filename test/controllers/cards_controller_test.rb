@@ -4,7 +4,7 @@ require 'test_helper'
 class CardsControllerTest < ActionDispatch::IntegrationTest
   describe "GET index" do
     describe "when no user is logged in" do
-      it "redirects to the login page page" do
+      it "redirects to the login page" do
         get cards_path
         assert_redirected_to login_path
       end
@@ -25,7 +25,7 @@ class CardsControllerTest < ActionDispatch::IntegrationTest
 
   describe "GET show" do
     describe "when no user is logged in" do
-      it "redirects to the login page page" do
+      it "redirects to the login page" do
         get card_path(cards(:cat))
         assert_redirected_to login_path
       end
@@ -48,7 +48,7 @@ class CardsControllerTest < ActionDispatch::IntegrationTest
 
   describe "GET new" do
     describe "when no user is logged in" do
-      it "redirects to the login page page" do
+      it "redirects to the login page" do
         get new_card_path
         assert_redirected_to login_path
       end
@@ -69,7 +69,7 @@ class CardsControllerTest < ActionDispatch::IntegrationTest
 
   describe "GET edit" do
     describe "when no user is logged in" do
-      it "redirects to the login page page" do
+      it "redirects to the login page" do
         get edit_card_path(cards(:cat))
         assert_redirected_to login_path
       end
@@ -100,7 +100,7 @@ class CardsControllerTest < ActionDispatch::IntegrationTest
         end
       end
 
-      it "redirects to the login page page" do
+      it "redirects to the login page" do
         post cards_path, params: { card: { english: "thanks", kana: "どうも" } }
         assert_redirected_to login_path
       end
@@ -160,7 +160,7 @@ class CardsControllerTest < ActionDispatch::IntegrationTest
         end
       end
 
-      it "redirects to the login page page" do
+      it "redirects to the login page" do
         patch card_path(cards(:foot)), params: { card: { english: "foot; leg" } }
         assert_redirected_to login_path
       end
@@ -197,7 +197,7 @@ class CardsControllerTest < ActionDispatch::IntegrationTest
         end
       end
 
-      it "redirects to the login page page" do
+      it "redirects to the login page" do
         delete card_path(cards(:cat), format: :js)
         assert_redirected_to login_path
       end
@@ -229,7 +229,7 @@ class CardsControllerTest < ActionDispatch::IntegrationTest
         end
       end
 
-      it "redirects to the login page page" do
+      it "redirects to the login page" do
         patch move_decks_card_path(cards(:cat), format: :js), params: { old_deck_id: decks(:study_now).id, new_deck_id: decks(:study_later).id }
         assert_redirected_to login_path
       end
@@ -306,7 +306,7 @@ class CardsControllerTest < ActionDispatch::IntegrationTest
         end
       end
 
-      it "redirects to the login page page" do
+      it "redirects to the login page" do
         delete delete_audio_sample_card_path(cards(:foot))
         assert_redirected_to login_path
       end

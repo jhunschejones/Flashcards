@@ -4,7 +4,7 @@ require 'test_helper'
 class DecksControllerTest < ActionDispatch::IntegrationTest
   describe "GET index" do
     describe "when no user is logged in" do
-      it "redirects to the login page page" do
+      it "redirects to the login page" do
         get decks_path
         assert_redirected_to login_path
       end
@@ -25,7 +25,7 @@ class DecksControllerTest < ActionDispatch::IntegrationTest
 
   describe "GET show" do
     describe "when no user is logged in" do
-      it "redirects to the login page page" do
+      it "redirects to the login page" do
         get deck_path(decks(:study_now))
         assert_redirected_to login_path
       end
@@ -53,7 +53,7 @@ class DecksControllerTest < ActionDispatch::IntegrationTest
 
   describe "GET new" do
     describe "when no user is logged in" do
-      it "redirects to the login page page" do
+      it "redirects to the login page" do
         get new_deck_path
         assert_redirected_to login_path
       end
@@ -81,7 +81,7 @@ class DecksControllerTest < ActionDispatch::IntegrationTest
 
   describe "GET edit" do
     describe "when no user is logged in" do
-      it "redirects to the login page page" do
+      it "redirects to the login page" do
         get edit_deck_path(decks(:study_now))
         assert_redirected_to login_path
       end
@@ -113,7 +113,7 @@ class DecksControllerTest < ActionDispatch::IntegrationTest
 
   describe "GET sort_cards" do
     describe "when no user is logged in" do
-      it "redirects to the login page page" do
+      it "redirects to the login page" do
         get sort_cards_deck_path(decks(:study_now))
         assert_redirected_to login_path
       end
@@ -143,7 +143,7 @@ class DecksControllerTest < ActionDispatch::IntegrationTest
         end
       end
 
-      it "redirects to the login page page" do
+      it "redirects to the login page" do
         post decks_path, params: { deck: { name: "Everyday words", start_with: "audio_sample" } }
         assert_redirected_to login_path
       end
@@ -177,7 +177,7 @@ class DecksControllerTest < ActionDispatch::IntegrationTest
         end
       end
 
-      it "redirects to the login page page" do
+      it "redirects to the login page" do
         patch deck_path(decks(:study_now)), params: { deck: { name: "JLPT Review" } }
         assert_redirected_to login_path
       end
@@ -214,7 +214,7 @@ class DecksControllerTest < ActionDispatch::IntegrationTest
         end
       end
 
-      it "redirects to the login page page" do
+      it "redirects to the login page" do
         delete deck_path(decks(:study_now), format: :js)
         assert_redirected_to login_path
       end
@@ -246,7 +246,7 @@ class DecksControllerTest < ActionDispatch::IntegrationTest
         end
       end
 
-      it "redirects to the login page page" do
+      it "redirects to the login page" do
         patch take_cards_deck_path(decks(:study_later)), params: { take_from_deck_id: decks(:study_now).id, number_of_cards: 5 }
         assert_redirected_to login_path
       end
@@ -374,7 +374,7 @@ class DecksControllerTest < ActionDispatch::IntegrationTest
         end
       end
 
-      it "redirects to the login page page" do
+      it "redirects to the login page" do
         patch next_card_in_deck_path(decks(:study_now), format: :js)
         assert_redirected_to login_path
       end
@@ -407,7 +407,7 @@ class DecksControllerTest < ActionDispatch::IntegrationTest
         end
       end
 
-      it "redirects to the login page page" do
+      it "redirects to the login page" do
         patch previous_card_in_deck_path(decks(:study_now), format: :js)
         assert_redirected_to login_path
       end
@@ -428,6 +428,39 @@ class DecksControllerTest < ActionDispatch::IntegrationTest
         patch previous_card_in_deck_path(decks(:study_now), format: :js)
         assert_response :success
         assert_match /englishText.innerHTML = \"#{cards(:glass).english}\"/, response.body
+      end
+    end
+  end
+
+  describe "PATCH shuffle" do
+    describe "when no user is logged in" do
+      it "does not shuffle the deck" do
+        assert_no_changes -> { CardDeck.where(deck: decks(:study_now)).take(5) } do
+          patch shuffle_deck_path(decks(:study_now))
+        end
+      end
+
+      it "redirects to the login page" do
+        patch shuffle_deck_path(decks(:study_now))
+        assert_redirected_to login_path
+      end
+    end
+
+    describe "when a user is logged in" do
+      before do
+        login_as(users(:carl))
+      end
+
+      it "shuffles the deck" do
+        assert_changes -> { CardDeck.where(deck: decks(:study_now)).take(5) } do
+          patch shuffle_deck_path(decks(:study_now))
+        end
+      end
+
+      it "redirects to edit page with message" do
+        patch shuffle_deck_path(decks(:study_now))
+        assert_redirected_to edit_deck_path(decks(:study_now))
+        assert_equal "Deck shuffled!", flash[:success]
       end
     end
   end
