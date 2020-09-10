@@ -41,25 +41,25 @@ class CardsController < ApplicationController
   end
 
   def move_decks
-    @current_deck = Deck.find(params[:old_deck_id])
-    @new_deck = Deck.find(params[:new_deck_id])
+    current_deck = Deck.find(params[:old_deck_id])
+    new_deck = Deck.find(params[:new_deck_id])
 
-    @current_card =
+    next_card =
       ActiveRecord::Base.transaction do
-        # Attempt to create the new card_deck, do not raise if it already exists
-        CardDeck.find_or_create_by(card: @card, deck: @new_deck)
-        destroyed_card_deck = CardDeck.find_by(card: @card, deck: @current_deck).destroy
+        CardDeck.create_if_not_exists(card: @card, deck: new_deck)
+        destroyed_card_deck = CardDeck.find_by(card: @card, deck: current_deck).destroy
 
         # After a card_deck is destroyed, position values cascade such that the old
         # position value should now have been re-assigned to the next card_deck. If
         # the last card was moved out of the deck we need to return nil out of this
         # transaction -- hence the safe operators after looking up the card_deck.
-        current_card_deck = CardDeck.find_by(position: destroyed_card_deck.position, deck: @current_deck)
+        current_card_deck = CardDeck.find_by(position: destroyed_card_deck.position, deck: current_deck)
         current_card_deck&.update(status: CardDeck::CURRENT_CARD)
         current_card_deck&.card
       end
 
-    return redirect_to(deck_path(@current_deck)) unless @current_card.present?
+    @current_card = next_card
+    return redirect_to(deck_path(current_deck)) unless next_card.present?
     respond_to { |format| format.js { render '/decks/next_card' } }
   end
 

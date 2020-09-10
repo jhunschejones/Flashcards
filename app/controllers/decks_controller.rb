@@ -57,12 +57,11 @@ class DecksController < ApplicationController
     cards_to_take = take_from_deck.cards.take(params[:number_of_cards].to_i)
     ActiveRecord::Base.transaction do
       cards_to_take.each do |card|
-        # Attempt to create the new card_deck, do not raise if it already exists
-        CardDeck.find_or_create_by(card: card, deck: move_to_deck)
+        CardDeck.create_if_not_exists(card: card, deck: move_to_deck)
         CardDeck.find_by(card: card, deck: take_from_deck).destroy
       end
     end
-    flash[:success] = "#{cards_to_take.size} moved to '#{move_to_deck.name}'"
+    flash[:success] = "#{cards_to_take.size} cards moved to '#{move_to_deck.name}'"
 
     redirect_to decks_path
   end
@@ -102,7 +101,7 @@ class DecksController < ApplicationController
     valid_values = Deck::VALID_START_WITH_VALUES
 
     unless deck.cards.blank? || deck.cards.all? { |card| card.audio_sample.attached? }
-      valid_values.delete("audio_sample")
+      valid_values = valid_values - Array("audio_sample")
       # flash[:notice] = "Some cards in this deck are missing an audio sample"
     end
 

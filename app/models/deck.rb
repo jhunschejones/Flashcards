@@ -5,7 +5,7 @@ class Deck < ApplicationRecord
   validates :name, presence: true
   validate :start_with_valid
 
-  VALID_START_WITH_VALUES = ["kana", "english", "audio_sample"]
+  VALID_START_WITH_VALUES = ["kana", "english", "audio_sample"].freeze
 
   def shuffle
     # This method suspends the auto-sorting callbacks while I manually change

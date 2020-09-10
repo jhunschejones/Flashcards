@@ -9,6 +9,7 @@ cat_study_now:
   card: cat
   deck: study_now
   position: 1
+  status: current
 
 dog_study_now:
   card: dog
