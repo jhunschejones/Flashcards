@@ -112,7 +112,7 @@ class DecksController < ApplicationController
   end
 
   def set_deck
-    @deck = Deck.includes(:card_decks, :cards).find(params[:id])
+    @deck = Deck.includes(card_decks: [:card]).find(params[:id])
   end
 
   def start_with_options(deck)

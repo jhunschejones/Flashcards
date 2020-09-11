@@ -41,8 +41,8 @@ class CardsController < ApplicationController
   end
 
   def move_decks
-    current_deck = Deck.find(params[:old_deck_id])
-    new_deck = Deck.find(params[:new_deck_id])
+    current_deck = Deck.includes(card_decks: [:card]).find(params[:old_deck_id])
+    new_deck = Deck.includes(card_decks: [:card]).find(params[:new_deck_id])
 
     next_card =
       ActiveRecord::Base.transaction do
@@ -82,6 +82,6 @@ class CardsController < ApplicationController
   end
 
   def set_card
-    @card = Card.find(params[:id])
+    @card = Card.includes(card_decks: [:card]).find(params[:id])
   end
 end
