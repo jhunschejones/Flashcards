@@ -48,6 +48,12 @@ class DecksControllerTest < ActionDispatch::IntegrationTest
         get deck_path(decks(:study_now))
         assert_select "option", decks(:study_later).name
       end
+
+      it "redirects to decks page with message when deck has no cards" do
+        get deck_path(decks(:study_later))
+        assert_redirected_to decks_path
+        assert_equal "You finished all the cards in Study Later!", flash[:success]
+      end
     end
   end
 
@@ -160,11 +166,10 @@ class DecksControllerTest < ActionDispatch::IntegrationTest
         end
       end
 
-      it "redirects to the deck show page" do
+      it "redirects to the decks page with message" do
         post decks_path, params: { deck: { name: "Everyday words", start_with: "audio_sample" } }
-        assert_redirected_to deck_path(Deck.last)
-        follow_redirect!
-        assert_select "h1.deck-name", "Everyday words"
+        assert_redirected_to decks_path
+        assert_equal "Everyday words was successfully created!", flash[:success]
       end
     end
   end
@@ -273,7 +278,7 @@ class DecksControllerTest < ActionDispatch::IntegrationTest
         it "redirects to decks path with message" do
           patch take_cards_deck_path(decks(:study_later)), params: { take_from_deck_id: decks(:study_now).id, number_of_cards: 5 }
           assert_redirected_to decks_path
-          assert_equal "5 cards moved to 'Study Later'", flash[:success]
+          assert_equal "5 cards moved to Study Later", flash[:success]
         end
       end
 
@@ -293,7 +298,7 @@ class DecksControllerTest < ActionDispatch::IntegrationTest
         it "redirects to decks path with message" do
           patch take_cards_deck_path(decks(:study_now)), params: { move_to_deck_id: decks(:study_later).id, number_of_cards: 5 }
           assert_redirected_to decks_path
-          assert_equal "5 cards moved to 'Study Later'", flash[:success]
+          assert_equal "5 cards moved to Study Later", flash[:success]
         end
 
         describe "when a card already exists in other deck" do
@@ -316,7 +321,7 @@ class DecksControllerTest < ActionDispatch::IntegrationTest
           it "redirects to decks path with message" do
             patch take_cards_deck_path(decks(:study_now)), params: { move_to_deck_id: decks(:study_later).id, number_of_cards: 5 }
             assert_redirected_to decks_path
-            assert_equal "5 cards moved to 'Study Later'", flash[:success]
+            assert_equal "5 cards moved to Study Later", flash[:success]
           end
         end
 
@@ -336,7 +341,7 @@ class DecksControllerTest < ActionDispatch::IntegrationTest
           it "redirects to decks path with message" do
             patch take_cards_deck_path(decks(:study_now)), params: { move_to_deck_id: decks(:study_later).id, number_of_cards: 50 }
             assert_redirected_to decks_path
-            assert_equal "12 cards moved to 'Study Later'", flash[:success]
+            assert_equal "12 cards moved to Study Later", flash[:success]
           end
         end
       end

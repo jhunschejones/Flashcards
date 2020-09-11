@@ -58,14 +58,16 @@ class CardsController < ApplicationController
         current_card_deck&.card
       end
 
-    @current_card = next_card
-    return redirect_to(deck_path(current_deck)) unless next_card.present?
-    respond_to do |format|
-      format.js {
-        @deck = current_deck
-        render '/decks/next_card'
-      }
+    unless next_card.present?
+      flash[:success] = "You finished all the cards in #{current_deck.name}!"
+      return redirect_to(decks_path)
     end
+
+    @deck = current_deck
+    @current_card = next_card
+    @progress = "#{@deck.position_of(card: @current_card)} / #{@deck.card_decks.size}"
+
+    respond_to { |format| format.js { render '/decks/next_card' } }
   end
 
   def delete_audio_sample

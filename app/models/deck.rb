@@ -20,6 +20,11 @@ class Deck < ApplicationRecord
     @was_just_shuffled = true
   end
 
+  def position_of(card:)
+    return unless card.present?
+    CardDeck.find_by(deck: self, card: card).position
+  end
+
   private
 
   def start_with_valid

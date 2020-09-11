@@ -286,9 +286,10 @@ class CardsControllerTest < ActionDispatch::IntegrationTest
           CardDeck.where.not(id: card_decks(:cat_study_now).id).where(deck: decks(:study_now)).destroy_all
         end
 
-        it "redirects to deck path" do
+        it "redirects to the decks path with message" do
           patch move_decks_card_path(cards(:cat), format: :js), params: { old_deck_id: decks(:study_now).id, new_deck_id: decks(:study_later).id }
-          assert_redirected_to deck_path(decks(:study_now))
+          assert_redirected_to decks_path
+          assert_equal "You finished all the cards in Study Now!", flash[:success]
         end
       end
     end

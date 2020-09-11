@@ -7,9 +7,16 @@ class DecksController < ApplicationController
 
   def show
     @current_card = Card.find_or_set_current_card_for(deck: @deck)
-    @current_card&.increment!(:review_count, touch: true)
-    @all_decks = Deck.order(created_at: :asc)
-    @moveable_decks = @all_decks - Array(@deck)
+
+    if @current_card.nil?
+      flash[:success] = "You finished all the cards in #{@deck.name}!"
+      redirect_to(decks_path)
+    else
+      @current_card.increment!(:review_count, touch: true)
+      @progress = deck_progress
+      @all_decks = Deck.order(created_at: :asc)
+      @moveable_decks = @all_decks - Array(@deck)
+    end
   end
 
   def new
@@ -27,7 +34,8 @@ class DecksController < ApplicationController
 
   def create
     @deck = Deck.create!(deck_params)
-    redirect_to deck_path(@deck)
+    flash[:success] = "#{@deck.name} was successfully created!"
+    redirect_to decks_path
   end
 
   def update
@@ -61,7 +69,7 @@ class DecksController < ApplicationController
         CardDeck.find_by(card: card, deck: take_from_deck).destroy
       end
     end
-    flash[:success] = "#{cards_to_take.size} cards moved to '#{move_to_deck.name}'"
+    flash[:success] = "#{cards_to_take.size} #{"card".pluralize(cards_to_take.size)} moved to #{move_to_deck.name}"
 
     redirect_to decks_path
   end
@@ -71,7 +79,10 @@ class DecksController < ApplicationController
     next_card.increment!(:review_count, touch: true)
     respond_to do |format|
       format.html { redirect_to deck_path(@deck) }
-      format.js { @current_card = next_card }
+      format.js {
+        @current_card = next_card
+        @progress = deck_progress
+      }
     end
   end
 
@@ -82,6 +93,7 @@ class DecksController < ApplicationController
       format.html { redirect_to deck_path(@deck) }
       format.js {
         @current_card = previous_card
+        @progress = deck_progress
         render '/decks/next_card'
       }
     end
@@ -118,5 +130,9 @@ class DecksController < ApplicationController
 
   def invalid_take_cards_info?
     (params[:take_from_deck_id].blank? && params[:move_to_deck_id].blank?) || (params[:take_from_deck_id].present? && params[:move_to_deck_id].present?) || params[:number_of_cards].to_i.zero?
+  end
+
+  def deck_progress
+    "#{@deck.position_of(card: @current_card)} / #{@deck.card_decks.size}"
   end
 end

@@ -23,6 +23,16 @@ class DeckTest < ActiveSupport::TestCase
     end
   end
 
+  describe "#position_of" do
+    it "returns the position of the specified card" do
+      assert_equal 2, decks(:study_now).position_of(card: cards(:dog))
+    end
+
+    it "returns nil when a deck has no cards" do
+      assert_nil decks(:study_later).position_of(card: nil)
+    end
+  end
+
   describe "validations" do
     it "is not vaild with unrecognized start_with value" do
       deck = Deck.new(name: "My new deck", start_with: "space cats")

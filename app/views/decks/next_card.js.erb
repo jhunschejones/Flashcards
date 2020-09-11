@@ -5,6 +5,7 @@
   var moveDecksForm = document.querySelector(".move-decks-form");
   var editCardButton = document.querySelector(".card-edit-button");
   var audioSample = document.querySelector(".audio-sample");
+  var deckProgressLabel = document.querySelector(".deck-progress");
 
   loader.classList.remove("is-active");
   englishText.innerHTML = "<%= @current_card.english %>"
@@ -19,6 +20,7 @@
   document.querySelector(".new-deck-select").value = "";
   moveDecksForm.action = "<%= move_decks_card_path(@current_card.id) %>";
   editCardButton.href = "<%= edit_card_url(@current_card.id) %>";
+  deckProgressLabel.innerHTML = "<%= @progress %>";
 
   <% if @deck.was_just_shuffled %>
     alert("The deck was automatically shuffled!");

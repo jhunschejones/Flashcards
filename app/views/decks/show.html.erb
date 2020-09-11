@@ -5,6 +5,7 @@
     <div class="card-interaction-container" data-controller="card deck" data-deck-start-with="<%= @deck.start_with %>">
       <div class="next-card"></div>
       <div class="deck-show-card">
+        <span class="deck-progress has-text-grey-lighter"><%= @progress %></span>
         <%= link_to(edit_card_path(@current_card), class: "has-text-grey-lighter card-edit-button") do %>
           <span class="icon is-small">
             <i class="fas fa-edit"></i>
