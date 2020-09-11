@@ -2,13 +2,13 @@ class DecksController < ApplicationController
   before_action :set_deck, except: [:index, :new, :create]
 
   def index
-    @decks = Deck.includes(:card_decks).order(created_at: :desc)
+    @decks = Deck.includes(:card_decks).order(created_at: :asc)
   end
 
   def show
     @current_card = Card.find_or_set_current_card_for(deck: @deck)
     @current_card&.increment!(:review_count, touch: true)
-    @all_decks = Deck.order(created_at: :desc)
+    @all_decks = Deck.order(created_at: :asc)
     @moveable_decks = @all_decks - Array(@deck)
   end
 
@@ -19,7 +19,7 @@ class DecksController < ApplicationController
 
   def edit
     @start_with_options = start_with_options(@deck)
-    @availible_decks = Deck.order(created_at: :desc).where.not(id: @deck.id)
+    @availible_decks = Deck.order(created_at: :asc).where.not(id: @deck.id)
   end
 
   def sort_cards

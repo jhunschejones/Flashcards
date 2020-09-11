@@ -10,11 +10,11 @@ class CardsController < ApplicationController
 
   def new
     @card = Card.new
-    @decks = Deck.order(created_at: :desc)
+    @decks = Deck.order(created_at: :asc)
   end
 
   def edit
-    @decks = Deck.order(created_at: :desc)
+    @decks = Deck.order(created_at: :asc)
   end
 
   def create
