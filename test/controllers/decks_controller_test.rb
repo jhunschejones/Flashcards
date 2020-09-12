@@ -401,6 +401,47 @@ class DecksControllerTest < ActionDispatch::IntegrationTest
         assert_response :success
         assert_match /englishText.innerHTML = \"#{cards(:dog).english}\"/, response.body
       end
+
+      describe "when the current card is at the end of the deck" do
+        before do
+          card_decks(:cat_study_now).update(status: nil)
+          card_decks(:glass_study_now).update(status: "current")
+        end
+
+        it "returns the first card in the deck" do
+          assert_equal "current", card_decks(:glass_study_now).status
+          patch next_card_in_deck_path(decks(:study_now), format: :js)
+          assert_equal "current", card_decks(:cat_study_now).reload.status
+          assert_match /englishText.innerHTML = \"#{cards(:cat).english}\"/, response.body
+        end
+
+        describe "when the deck is set to auto-shuffle" do
+          before do
+            decks(:study_now).update(is_randomized: true)
+            decks(:study_now).reload
+          end
+
+          it "shuffles the deck" do
+            assert decks(:study_now).is_randomized
+            assert_equal "current", card_decks(:glass_study_now).status
+
+            assert_changes -> { CardDeck.where(deck_id: decks(:study_now).id).take(5) } do
+              patch next_card_in_deck_path(decks(:study_now), format: :js)
+            end
+          end
+
+          it "returns the next card" do
+            patch next_card_in_deck_path(decks(:study_now), format: :js)
+            first_card = decks(:study_now).reload.cards.first
+            assert_match /englishText.innerHTML = \"#{first_card.english}\"/, response.body
+          end
+
+          it "returns an alert telling the user the deck was shuffled" do
+            patch next_card_in_deck_path(decks(:study_now), format: :js)
+            assert_match /alert\(\"The deck was automatically shuffled!\"\);/, response.body
+          end
+        end
+      end
     end
   end
 

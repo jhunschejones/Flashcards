@@ -281,6 +281,47 @@ class CardsControllerTest < ActionDispatch::IntegrationTest
         end
       end
 
+      describe "when the card moved is at the end of the deck" do
+        before do
+          card_decks(:cat_study_now).update(status: nil)
+          card_decks(:glass_study_now).update(status: "current")
+        end
+
+        it "returns the first card in the deck" do
+          assert_equal "current", card_decks(:glass_study_now).status
+          patch move_decks_card_path(cards(:glass), format: :js), params: { old_deck_id: decks(:study_now).id, new_deck_id: decks(:study_later).id }
+          assert_equal "current", card_decks(:cat_study_now).reload.status
+          assert_match /englishText.innerHTML = \"#{cards(:cat).english}\"/, response.body
+        end
+
+        describe "when the deck is set to auto-shuffle" do
+          before do
+            decks(:study_now).update(is_randomized: true)
+            decks(:study_now).reload
+          end
+
+          it "shuffles the deck" do
+            assert decks(:study_now).is_randomized
+            assert_equal "current", card_decks(:glass_study_now).status
+
+            assert_changes -> { CardDeck.where(deck_id: decks(:study_now).id).take(5) } do
+              patch move_decks_card_path(cards(:glass), format: :js), params: { old_deck_id: decks(:study_now).id, new_deck_id: decks(:study_later).id }
+            end
+          end
+
+          it "returns the next card" do
+            patch move_decks_card_path(cards(:glass), format: :js), params: { old_deck_id: decks(:study_now).id, new_deck_id: decks(:study_later).id }
+            first_card = decks(:study_now).reload.cards.first
+            assert_match /englishText.innerHTML = \"#{first_card.english}\"/, response.body
+          end
+
+          it "returns an alert telling the user the deck was shuffled" do
+            patch move_decks_card_path(cards(:glass), format: :js), params: { old_deck_id: decks(:study_now).id, new_deck_id: decks(:study_later).id }
+            assert_match /alert\(\"The deck was automatically shuffled!\"\);/, response.body
+          end
+        end
+      end
+
       describe "when there are no more cards in the current deck" do
         before do
           CardDeck.where.not(id: card_decks(:cat_study_now).id).where(deck: decks(:study_now)).destroy_all

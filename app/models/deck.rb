@@ -18,6 +18,7 @@ class Deck < ApplicationRecord
       card_decks.map { |card_deck| card_deck.update(position: new_positions.pop) }
     end
     @was_just_shuffled = true
+    self
   end
 
   def position_of(card:)
