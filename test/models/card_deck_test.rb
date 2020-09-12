@@ -46,4 +46,63 @@ class CardDeckTest < ActiveSupport::TestCase
       assert_equal card_decks(:cat_study_now), CardDeck.find_next(deck: decks(:study_now), current_card_deck: card_decks(:glass_study_now))
     end
   end
+
+  describe "#move" do
+    it "creates a new card_deck for the new_deck" do
+      assert_difference "CardDeck.where(card: cards(:cat), deck: decks(:study_later)).count", 1 do
+        card_decks(:cat_study_now).move(new_deck: decks(:study_later))
+      end
+    end
+
+    it "deletes the old card_deck" do
+      assert_difference "CardDeck.where(card: cards(:cat), deck: decks(:study_now)).count", -1 do
+        card_decks(:cat_study_now).move(new_deck: decks(:study_later))
+      end
+    end
+
+    it "returns the new card_deck" do
+      new_card_deck = card_decks(:cat_study_now).move(new_deck: decks(:study_later))
+      assert_equal decks(:study_later), new_card_deck.deck
+      assert_equal cards(:cat), new_card_deck.card
+    end
+
+    describe "when a card_deck already exists in the new_deck" do
+      before do
+        CardDeck.create(deck: decks(:study_later), card: cards(:cat))
+      end
+
+      it "does not create a new card_deck" do
+        assert_no_difference "CardDeck.where(card: cards(:cat), deck: decks(:study_later)).count" do
+          card_decks(:cat_study_now).move(new_deck: decks(:study_later))
+        end
+      end
+
+      it "deletes the old card_deck" do
+        assert_difference "CardDeck.where(card: cards(:cat), deck: decks(:study_now)).count", -1 do
+          card_decks(:cat_study_now).move(new_deck: decks(:study_later))
+        end
+      end
+
+      it "returns the new card_deck" do
+        new_card_deck = card_decks(:cat_study_now).move(new_deck: decks(:study_later))
+        assert_equal decks(:study_later), new_card_deck.deck
+        assert_equal cards(:cat), new_card_deck.card
+      end
+    end
+  end
+
+  describe "#should_shuffle?" do
+    it "returns false if card_deck is not first" do
+      refute card_decks(:house_study_now).should_shuffle?
+    end
+
+    it "returns false if the deck is not randomized" do
+      refute card_decks(:cat_study_now).should_shuffle?
+    end
+
+    it "returns true if the card is first and the deck is randomized" do
+      decks(:study_now).update(is_randomized: true)
+      assert card_decks(:cat_study_now).should_shuffle?
+    end
+  end
 end

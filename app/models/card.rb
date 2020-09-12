@@ -19,12 +19,7 @@ class Card < ApplicationRecord
       return unless current_card_deck.present?
 
       next_card_deck = CardDeck.find_next(deck: deck, current_card_deck: current_card_deck)
-
-      if deck.is_randomized? && (next_card_deck == deck.card_decks.first)
-        deck.shuffle
-        deck.card_decks.reload
-        next_card_deck = deck.card_decks.first
-      end
+      next_card_deck = deck.shuffle.card_decks.reload.first if next_card_deck.should_shuffle?
 
       current_card_deck.update(status: nil)
       next_card_deck.update(status: CardDeck::CURRENT_CARD)

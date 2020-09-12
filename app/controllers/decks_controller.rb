@@ -55,19 +55,16 @@ class DecksController < ApplicationController
     end
 
     if params[:take_from_deck_id].present?
-      take_from_deck = Deck.includes(:cards).find(params[:take_from_deck_id])
+      take_from_deck = Deck.includes(:card_decks).find(params[:take_from_deck_id])
       move_to_deck = @deck
     elsif params[:move_to_deck_id].present?
       take_from_deck = @deck
       move_to_deck = Deck.find(params[:move_to_deck_id])
     end
 
-    cards_to_take = take_from_deck.cards.take(params[:number_of_cards].to_i)
+    cards_to_take = take_from_deck.card_decks.take(params[:number_of_cards].to_i)
     ActiveRecord::Base.transaction do
-      cards_to_take.each do |card|
-        CardDeck.create_if_not_exists(card: card, deck: move_to_deck)
-        CardDeck.find_by(card: card, deck: take_from_deck).destroy
-      end
+      cards_to_take.each { |card_deck| card_deck.move(new_deck: move_to_deck) }
     end
     flash[:success] = "#{cards_to_take.size} #{"card".pluralize(cards_to_take.size)} moved to #{move_to_deck.name}"
 

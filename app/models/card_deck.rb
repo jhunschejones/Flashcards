@@ -30,4 +30,16 @@ class CardDeck < ApplicationRecord
       deck_id: current_card_deck.deck_id
     ) || deck.card_decks.first
   end
+
+  def move(new_deck:)
+    CardDeck.transaction do
+      moved_card_deck = CardDeck.create_if_not_exists(card: card, deck: new_deck)
+      self.destroy
+      moved_card_deck
+    end
+  end
+
+  def should_shuffle?
+    position == 1 && deck.is_randomized?
+  end
 end
