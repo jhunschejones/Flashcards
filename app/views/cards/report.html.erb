@@ -1,0 +1,54 @@
+<div class="cards-report">
+  <div class="cards-report-container">
+    <h2 class="title is-4">Cards report</h2>
+    <table class="table is-fullwidth">
+      <thead>
+        <tr>
+          <th>Metric</th>
+          <th>Sum</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td>Cards</td>
+          <td><%= @total_cards %></td>
+        </tr>
+        <tr>
+          <td>Card views</td>
+          <td><%= @total_card_views %></p></td>
+        </tr>
+        <tr>
+          <td>Cards not in decks</td>
+          <td><%= @cards_not_in_decks.size %></td>
+        </tr>
+    </table>
+
+    <% if @cards_not_in_decks.size > 0 %>
+      <div class="cards-not-in-decks">
+        <h2 class="title is-4">Cards not in decks</h2>
+        <table class="table is-fullwidth is-hoverable is-striped cards-list">
+          <thead>
+            <tr>
+              <th>English</th>
+              <th class="edit-column">
+                <span class="large-header">Edit</span>
+                <span class="icon is-small small-header">
+                  <i class="fas fa-edit"></i>
+                </span>
+              </th>
+              <th class="edit-column">
+                <span class="large-header">Delete</span>
+                <span class="icon is-small small-header">
+                  <i class="fas fa-trash"></i>
+                </span>
+              </th>
+            </tr>
+          </thead>
+          <tbody>
+            <%= render(partial: 'cards/editable_card', collection: @cards_not_in_decks, as: :card, cached: true) %>
+          </tbody>
+        </table>
+      </div>
+    <% end %>
+  </div>
+</div>

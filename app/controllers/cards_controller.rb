@@ -1,5 +1,5 @@
 class CardsController < ApplicationController
-  before_action :set_card, except: [:index, :new, :create]
+  before_action :set_card, except: [:index, :new, :create, :report]
 
   def index
     @cards = Card.includes(:card_decks).order(english: :asc)
@@ -64,6 +64,12 @@ class CardsController < ApplicationController
   def delete_audio_sample
     @card.audio_sample.purge
     redirect_to edit_card_path(@card)
+  end
+
+  def report
+    @total_cards = Card.count
+    @total_card_views = Card.sum(:review_count).to_i
+    @cards_not_in_decks = Card.left_outer_joins(:card_decks).where(card_decks: { card_id: nil })
   end
 
   private

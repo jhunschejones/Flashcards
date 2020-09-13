@@ -7,6 +7,7 @@ Rails.application.routes.draw do
     delete "logout" => :destroy
   end
 
+  get "/cards/report", to: "cards#report"
   resources :cards do
     member do
       patch :move_decks

@@ -371,4 +371,34 @@ class CardsControllerTest < ActionDispatch::IntegrationTest
       end
     end
   end
+
+  describe "GET report" do
+    describe "when no user is logged in" do
+      it "redirects to the login page" do
+        get cards_report_path
+        assert_redirected_to login_path
+      end
+    end
+
+    describe "when a user is logged in" do
+      before do
+        login_as(users(:carl))
+      end
+
+      it "loads the card report page" do
+        get cards_report_path
+        assert_response :success
+        assert_select "h2.title", "Cards report"
+      end
+
+      it "lists only cards not in decks" do
+        card_decks(:glass_study_now).destroy
+        get cards_report_path
+        assert_select "h2.title", "Cards not in decks"
+        # 1 row for the card not in a deck and 1 for the header
+        assert_select "table.cards-list tr", count: 2
+        assert_select "td", cards(:glass).english
+      end
+    end
+  end
 end

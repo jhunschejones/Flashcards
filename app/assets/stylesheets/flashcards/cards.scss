@@ -111,3 +111,38 @@
     }
   }
 }
+
+.cards-report {
+  .cards-not-in-decks {
+    .cards-list {
+      .edit-column {
+        width: 60px;
+        text-align: center;
+        .small-header {
+          display: none;
+        }
+      }
+      .edit-card-cell {
+        text-align: center;
+      }
+      @media screen and (max-width: $navbar-breakpoint) {
+        padding: 10px;
+        .edit-column {
+          width: 20px;
+          padding-left: 10px;
+          padding-right: 10px;
+          .large-header {
+            display: none;
+          }
+          .small-header {
+            display: block;
+          }
+        }
+        .edit-card-cell {
+          padding-left: 10px;
+          padding-right: 10px;
+        }
+      }
+    }
+  }
+}
