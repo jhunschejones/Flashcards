@@ -36,7 +36,7 @@ class DeckTest < ActiveSupport::TestCase
   describe "validations" do
     it "is not vaild with unrecognized start_with value" do
       deck = Deck.new(name: "My new deck", start_with: "space cats")
-      expected_error = {:start_with=>["not included in '[\"kana\", \"english\", \"audio_sample\"]'"]}
+      expected_error = {:start_with=>["not included in '[\"kana\", \"kanji\", \"english\", \"audio_sample\"]'"]}
 
       refute deck.valid?
       assert_equal expected_error, deck.errors.messages

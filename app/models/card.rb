@@ -44,7 +44,8 @@ class Card < ApplicationRecord
   private
 
   def trim_text_values
-    self.english = self.english.strip
-    self.kana = self.kana.strip
+    self.english = self.english&.strip
+    self.kana = self.kana&.strip
+    self.kanji = self.kanji&.strip
   end
 end

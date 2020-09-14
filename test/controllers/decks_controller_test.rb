@@ -42,6 +42,7 @@ class DecksControllerTest < ActionDispatch::IntegrationTest
         assert_select "h1.deck-name", decks(:study_now).name
         assert_select "div.english-text", cards(:cat).english
         assert_select "div.kana-text", cards(:cat).kana
+        assert_select "div.kanji-text", cards(:cat).kanji
       end
 
       it "shows decks the current card could be moved to" do
@@ -207,6 +208,7 @@ class DecksControllerTest < ActionDispatch::IntegrationTest
         assert_select "h1.deck-name", "JLPT Review"
         assert_select "div.english-text", cards(:cat).english
         assert_select "div.kana-text", cards(:cat).kana
+        assert_select "div.kanji-text", cards(:cat).kanji
       end
     end
   end

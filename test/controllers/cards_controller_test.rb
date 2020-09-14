@@ -42,6 +42,7 @@ class CardsControllerTest < ActionDispatch::IntegrationTest
         assert_select "div.card-details-card"
         assert_select "div.english-text", cards(:cat).english
         assert_select "div.kana-text", cards(:cat).kana
+        assert_select "div.kanji-text", cards(:cat).kanji
       end
     end
   end
@@ -87,6 +88,7 @@ class CardsControllerTest < ActionDispatch::IntegrationTest
         assert_select "input" do
           assert_select "[value=?]", cards(:cat).english
           assert_select "[value=?]", cards(:cat).kana
+          assert_select "[value=?]", cards(:cat).kanji
         end
       end
     end
@@ -124,6 +126,7 @@ class CardsControllerTest < ActionDispatch::IntegrationTest
         assert_select "div.card-details-card"
         assert_select "div.english-text", "thanks"
         assert_select "div.kana-text", "どうも"
+        assert_select "div.kanji-text", ""  # No kanji included
       end
 
       describe "when a deck is specified" do
@@ -185,6 +188,7 @@ class CardsControllerTest < ActionDispatch::IntegrationTest
         assert_select "div.card-details-card"
         assert_select "div.english-text", "foot; leg"
         assert_select "div.kana-text", cards(:foot).kana
+        assert_select "div.kanji-text", cards(:foot).kanji
       end
     end
   end

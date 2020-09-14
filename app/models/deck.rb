@@ -7,7 +7,7 @@ class Deck < ApplicationRecord
 
   attr_accessor :was_just_shuffled
 
-  VALID_START_WITH_VALUES = ["kana", "english", "audio_sample"].freeze
+  VALID_START_WITH_VALUES = ["kana", "kanji", "english", "audio_sample"].freeze
 
   def shuffle
     # This method suspends the auto-sorting callbacks while I manually change

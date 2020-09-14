@@ -117,7 +117,10 @@ class DecksController < ApplicationController
 
     unless deck.cards.blank? || deck.cards.all? { |card| card.audio_sample.attached? }
       valid_values = valid_values - Array("audio_sample")
-      # flash[:notice] = "Some cards in this deck are missing an audio sample"
+    end
+
+    unless deck.cards.blank? || deck.cards.all? { |card| card.kanji.present? }
+      valid_values = valid_values - Array("kanji")
     end
 
     valid_values.map do |start_with_value|

@@ -2,14 +2,16 @@
   var loader = document.querySelector('.loader-wrapper');
   var englishText = document.querySelector(".english-text");
   var kanaText = document.querySelector(".kana-text");
+  var kanjiText = document.querySelector(".kanji-text");
   var moveDecksForm = document.querySelector(".move-decks-form");
   var editCardButton = document.querySelector(".card-edit-button");
   var audioSample = document.querySelector(".audio-sample");
   var deckProgressLabel = document.querySelector(".deck-progress");
 
   loader.classList.remove("is-active");
-  englishText.innerHTML = "<%= @current_card.english %>"
-  kanaText.innerHTML = "<%= @current_card.kana %>"
+  englishText.innerHTML = "<%= @current_card.english %>";
+  kanaText.innerHTML = "<%= @current_card.kana %>";
+  kanjiText.innerHTML = "<%= @current_card.kanji %>";
 
   <% if @current_card.audio_sample.attached? %>
     audioSample.innerHTML = '<%= raw(render(template: "decks/_play_audio_sample_button", locals: { current_card: @current_card }).squish) %>';

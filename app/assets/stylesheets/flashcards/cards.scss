@@ -14,14 +14,15 @@
     border-radius: 9px;
     margin: 0px 12px 12px 12px;
     padding: 12px;
-    .english-text {
+    .english-text,
+    .kana-text,
+    .kanji-text {
       font-size: 2em;
     }
-    .kana-text {
-      font-size: 2em;
-    }
-    .audio-sample audio {
-      margin-top: 6px;
+    .audio-sample {
+      .play-audio-sample-button {
+        margin: 6px 0px;
+      }
     }
   }
 }

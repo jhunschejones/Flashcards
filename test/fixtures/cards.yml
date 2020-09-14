@@ -8,49 +8,61 @@
 cat:
   english: cat
   kana: ねこ
+  kanji: 猫
 
 dog:
   english: dog
   kana: いぬ
+  kanji: 犬
 
 house:
   english: house
   kana: いえ
+  kanji: 家
 
 car:
   english: car
   kana: くるま
+  kanji: 車
 
 meat:
   english: meat
   kana: にく
+  kanji: 肉
 
 fish:
   english: fish
   kana: さかな
+  kanji: 魚
 
 vegetables:
   english: vegetables
   kana: やさい
+  kanji: 野菜
 
 summer:
   english: summer
   kana: なつ
+  kanji: 夏
 
 family:
   english: family
   kana: かぞく
+  kanji: 家族
 
-# ./files/1018.mp3
+# audio_sample -> ./files/1018.mp3
 foot:
   english: foot
   kana: あし
+  kanji: 足
 
 water:
   english: water
   kana: みず
+  kanji: 水
 
-# ./files/16038.mp3
+# audio_sample -> ./files/16038.mp3
 glass:
   english: glass
   kana: グラス
+  # kanji field intentionally left blank for this card

@@ -2,6 +2,7 @@
   <div class="card-details-card">
     <div class="english-text"><%= @card.english %></div>
     <div class="kana-text"><%= @card.kana %></div>
+    <div class="kanji-text"><%= @card.kanji %></div>
     <div class="audio-sample">
       <% if @card.audio_sample.attached? %>
         <%= render(template: 'decks/_play_audio_sample_button', locals: { current_card: @card }) %>

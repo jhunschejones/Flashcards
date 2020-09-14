@@ -75,7 +75,7 @@ class CardsController < ApplicationController
   private
 
   def card_params
-    params.require(:card).permit(:english, :kana, :audio_sample)
+    params.require(:card).permit(:english, :kana, :kanji, :audio_sample)
   end
 
   def set_card

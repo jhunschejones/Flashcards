@@ -1,7 +1,7 @@
 import { Controller } from "stimulus"
 
 export default class extends Controller {
-  static targets = [ "englishText", "kanaText", "audioSample", "loader" ]
+  static targets = [ "englishText", "kanaText", "kanjiText", "audioSample", "loader" ]
 
   initialize() {
     this.isFlipped = false;
@@ -22,6 +22,7 @@ export default class extends Controller {
     // Prevent flashing by blanking out current card content
     this.englishTextTarget.innerHTML = "";
     this.kanaTextTarget.innerHTML = "";
+    this.kanjiTextTarget.innerHTML = "";
     this.audioSampleTarget.innerHTML = "";
     this.loaderTarget.classList.add("is-active");
 
@@ -45,6 +46,15 @@ export default class extends Controller {
       case "english":
         this.englishTextTarget.style.display = "block";
         this.kanaTextTarget.style.display = "none";
+        this.kanjiTextTarget.style.display = "none";
+        if (this.hasAudioSampleTarget) {
+          this.audioSampleTarget.style.display = "none";
+        }
+        break;
+      case "kanji":
+        this.englishTextTarget.style.display = "none";
+        this.kanaTextTarget.style.display = "none";
+        this.kanjiTextTarget.style.display = "block";
         if (this.hasAudioSampleTarget) {
           this.audioSampleTarget.style.display = "none";
         }
@@ -52,6 +62,7 @@ export default class extends Controller {
       case "audio_sample":
         this.englishTextTarget.style.display = "none";
         this.kanaTextTarget.style.display = "none";
+        this.kanjiTextTarget.style.display = "none";
         if (this.hasAudioSampleTarget) {
           this.audioSampleTarget.style.display = "block";
         }
@@ -59,6 +70,7 @@ export default class extends Controller {
       default:
         this.englishTextTarget.style.display = "none";
         this.kanaTextTarget.style.display = "block";
+        this.kanjiTextTarget.style.display = "none";
         if (this.hasAudioSampleTarget) {
           this.audioSampleTarget.style.display = "none";
         }
@@ -70,6 +82,15 @@ export default class extends Controller {
       case "english":
         this.englishTextTarget.style.display = "none";
         this.kanaTextTarget.style.display = "block";
+        this.kanjiTextTarget.style.display = "block";
+        if (this.hasAudioSampleTarget) {
+          this.audioSampleTarget.style.display = "block";
+        }
+        break;
+      case "kanji":
+        this.englishTextTarget.style.display = "block";
+        this.kanaTextTarget.style.display = "block";
+        this.kanjiTextTarget.style.display = "none";
         if (this.hasAudioSampleTarget) {
           this.audioSampleTarget.style.display = "block";
         }
@@ -77,6 +98,7 @@ export default class extends Controller {
       case "audio_sample":
         this.englishTextTarget.style.display = "block";
         this.kanaTextTarget.style.display = "block";
+        this.kanjiTextTarget.style.display = "block";
         if (this.hasAudioSampleTarget) {
           this.audioSampleTarget.style.display = "none";
         }
@@ -84,6 +106,7 @@ export default class extends Controller {
       default:
         this.englishTextTarget.style.display = "block";
         this.kanaTextTarget.style.display = "none";
+        this.kanjiTextTarget.style.display = "block";
         if (this.hasAudioSampleTarget) {
           this.audioSampleTarget.style.display = "block";
         }

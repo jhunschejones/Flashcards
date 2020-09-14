@@ -47,11 +47,9 @@
         right: 40px;
         opacity: 0.7;
       }
-      .english-text {
-        font-size: 2em;
-        display: none;
-      }
-      .kana-text {
+      .english-text,
+      .kana-text,
+      .kanji-text {
         font-size: 2em;
         display: none;
       }
