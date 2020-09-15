@@ -4,7 +4,6 @@ class CreateCardDecks < ActiveRecord::Migration[6.0]
       t.references :card, null: false, foreign_key: { on_delete: :cascade }
       t.references :deck, null: false, foreign_key: { on_delete: :cascade }
       t.text :status
-      t.datetime :next_review_at
       t.integer :position
 
       t.timestamps
