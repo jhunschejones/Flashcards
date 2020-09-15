@@ -16,6 +16,10 @@ class DecksController < ApplicationController
       @progress = deck_progress
       @all_decks = Deck.order(created_at: :asc)
       @moveable_decks = @all_decks - Array(@deck)
+
+      if @deck.is_randomized
+        flash.now[:notice] = "This deck will automatically shuffle after you complete the last card."
+      end
     end
   end
 

@@ -50,10 +50,25 @@ class DecksControllerTest < ActionDispatch::IntegrationTest
         assert_select "option", decks(:study_later).name
       end
 
-      it "redirects to decks page with message when deck has no cards" do
-        get deck_path(decks(:study_later))
-        assert_redirected_to decks_path
-        assert_equal "You finished all the cards in Study Later!", flash[:success]
+      describe "when the deck has no cards" do
+        it "redirects to decks page with message" do
+          get deck_path(decks(:study_later))
+          assert_redirected_to decks_path
+          assert_equal "You finished all the cards in Study Later!", flash[:success]
+        end
+      end
+
+      describe "when auto-shuffle is on for the deck" do
+        before do
+          decks(:study_now).update(is_randomized: true)
+        end
+
+        it "returns a message alerting the user" do
+          expected_message = "This deck will automatically shuffle after you complete the last card."
+          get deck_path(decks(:study_now))
+          assert_response :success
+          assert_equal expected_message, flash[:notice]
+        end
       end
     end
   end
@@ -436,11 +451,6 @@ class DecksControllerTest < ActionDispatch::IntegrationTest
             patch next_card_in_deck_path(decks(:study_now), format: :js)
             first_card = decks(:study_now).reload.cards.first
             assert_match /englishText.innerHTML = \"#{first_card.english}\"/, response.body
-          end
-
-          it "returns an alert telling the user the deck was shuffled" do
-            patch next_card_in_deck_path(decks(:study_now), format: :js)
-            assert_match /alert\(\"The deck was automatically shuffled!\"\);/, response.body
           end
         end
       end

@@ -318,11 +318,6 @@ class CardsControllerTest < ActionDispatch::IntegrationTest
             first_card = decks(:study_now).reload.cards.first
             assert_match /englishText.innerHTML = \"#{first_card.english}\"/, response.body
           end
-
-          it "returns an alert telling the user the deck was shuffled" do
-            patch move_decks_card_path(cards(:glass), format: :js), params: { old_deck_id: decks(:study_now).id, new_deck_id: decks(:study_later).id }
-            assert_match /alert\(\"The deck was automatically shuffled!\"\);/, response.body
-          end
         end
       end
 
