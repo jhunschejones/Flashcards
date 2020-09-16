@@ -119,11 +119,11 @@ class DecksController < ApplicationController
   def start_with_options(deck)
     valid_values = Deck::VALID_START_WITH_VALUES
 
-    unless deck.cards.blank? || deck.cards.all? { |card| card.audio_sample.attached? }
+    unless deck.cards&.all? { |card| card.audio_sample.attached? }
       valid_values = valid_values - Array("audio_sample")
     end
 
-    unless deck.cards.blank? || deck.cards.all? { |card| card.kanji.present? }
+    unless deck.cards&.all? { |card| card.kanji.present? }
       valid_values = valid_values - Array("kanji")
     end
 

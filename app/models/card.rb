@@ -9,8 +9,7 @@ class Card < ApplicationRecord
   before_save :trim_text_values
 
   def self.find_or_set_current_card_for(deck:)
-    return if deck.cards.blank?
-    CardDeck.find_or_set_current_card_deck(deck: deck).card
+    CardDeck.find_or_set_current_card_deck(deck: deck)&.card
   end
 
   def self.next_card_in(deck:)
