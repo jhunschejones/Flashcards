@@ -67,8 +67,8 @@ class DecksController < ApplicationController
     end
 
     cards_to_take = take_from_deck.card_decks.take(params[:number_of_cards].to_i)
-    ActiveRecord::Base.transaction do
-      cards_to_take.each { |card_deck| card_deck.move(new_deck: move_to_deck) }
+    ActiveRecord::Base.transaction(joinable: false) do
+      cards_to_take.each { |card_deck| card_deck.move_to(new_deck: move_to_deck) }
     end
     flash[:success] = "#{cards_to_take.size} #{"card".pluralize(cards_to_take.size)} moved to #{move_to_deck.name}"
 

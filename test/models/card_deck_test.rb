@@ -50,18 +50,18 @@ class CardDeckTest < ActiveSupport::TestCase
   describe "#move" do
     it "creates a new card_deck for the new_deck" do
       assert_difference "CardDeck.where(card: cards(:cat), deck: decks(:study_later)).count", 1 do
-        card_decks(:cat_study_now).move(new_deck: decks(:study_later))
+        card_decks(:cat_study_now).move_to(new_deck: decks(:study_later))
       end
     end
 
     it "deletes the old card_deck" do
       assert_difference "CardDeck.where(card: cards(:cat), deck: decks(:study_now)).count", -1 do
-        card_decks(:cat_study_now).move(new_deck: decks(:study_later))
+        card_decks(:cat_study_now).move_to(new_deck: decks(:study_later))
       end
     end
 
     it "returns the new card_deck" do
-      new_card_deck = card_decks(:cat_study_now).move(new_deck: decks(:study_later))
+      new_card_deck = card_decks(:cat_study_now).move_to(new_deck: decks(:study_later))
       assert_equal decks(:study_later), new_card_deck.deck
       assert_equal cards(:cat), new_card_deck.card
     end
@@ -73,18 +73,18 @@ class CardDeckTest < ActiveSupport::TestCase
 
       it "does not create a new card_deck" do
         assert_no_difference "CardDeck.where(card: cards(:cat), deck: decks(:study_later)).count" do
-          card_decks(:cat_study_now).move(new_deck: decks(:study_later))
+          card_decks(:cat_study_now).move_to(new_deck: decks(:study_later))
         end
       end
 
       it "deletes the old card_deck" do
         assert_difference "CardDeck.where(card: cards(:cat), deck: decks(:study_now)).count", -1 do
-          card_decks(:cat_study_now).move(new_deck: decks(:study_later))
+          card_decks(:cat_study_now).move_to(new_deck: decks(:study_later))
         end
       end
 
       it "returns the new card_deck" do
-        new_card_deck = card_decks(:cat_study_now).move(new_deck: decks(:study_later))
+        new_card_deck = card_decks(:cat_study_now).move_to(new_deck: decks(:study_later))
         assert_equal decks(:study_later), new_card_deck.deck
         assert_equal cards(:cat), new_card_deck.card
       end

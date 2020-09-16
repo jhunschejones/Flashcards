@@ -31,8 +31,8 @@ class CardDeck < ApplicationRecord
     ) || deck.card_decks.first
   end
 
-  def move(new_deck:)
-    CardDeck.transaction do
+  def move_to(new_deck:)
+    CardDeck.transaction(requires_new: true) do
       moved_card_deck = CardDeck.create_if_not_exists(card: card, deck: new_deck)
       self.destroy
       moved_card_deck

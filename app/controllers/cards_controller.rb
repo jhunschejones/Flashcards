@@ -43,7 +43,7 @@ class CardsController < ApplicationController
   def move_decks
     @deck = Deck.includes(card_decks: [:card]).find(params[:old_deck_id])
     card_deck_to_move = CardDeck.find_by(card: @card, deck: @deck)
-    card_deck_to_move.move(new_deck: Deck.find(params[:new_deck_id]))
+    card_deck_to_move.move_to(new_deck: Deck.find(params[:new_deck_id]))
 
     # After a card_deck is moved position values cascade such that the old current
     # position value should now have been re-assigned to the next card_deck. If
