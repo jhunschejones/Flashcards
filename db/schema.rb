@@ -51,19 +51,19 @@ ActiveRecord::Schema.define(version: 2020_09_15_041715) do
   create_table "cards", force: :cascade do |t|
     t.text "english", null: false
     t.text "kana", null: false
+    t.text "kanji"
+    t.bigint "review_count", default: 0
     t.datetime "created_at", precision: 6, null: false
     t.datetime "updated_at", precision: 6, null: false
-    t.bigint "review_count", default: 0
-    t.text "kanji"
     t.index ["english", "kana"], name: "index_cards_on_english_and_kana", unique: true
   end
 
   create_table "decks", force: :cascade do |t|
     t.text "name", null: false
     t.string "start_with"
+    t.boolean "is_randomized", default: false
     t.datetime "created_at", precision: 6, null: false
     t.datetime "updated_at", precision: 6, null: false
-    t.boolean "is_randomized", default: false
   end
 
   create_table "users", force: :cascade do |t|

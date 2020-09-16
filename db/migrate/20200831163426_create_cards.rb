@@ -9,6 +9,6 @@ class CreateCards < ActiveRecord::Migration[6.0]
       t.timestamps
     end
 
-    add_index :cards, [:english, :japanese], unique: true
+    add_index :cards, [:english, :kana], unique: true
   end
 end
