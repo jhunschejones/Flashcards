@@ -6,21 +6,6 @@ class DecksController < ApplicationController
   end
 
   def show
-    @current_card = Card.find_or_set_current_card_for(deck: @deck)
-
-    if @current_card.nil?
-      flash[:success] = "You finished all the cards in #{@deck.name}!"
-      redirect_to(decks_path)
-    else
-      @current_card.increment!(:review_count, touch: true)
-      @progress = deck_progress
-      @all_decks = Deck.order(created_at: :asc)
-      @moveable_decks = @all_decks - Array(@deck)
-
-      if @deck.is_randomized
-        flash.now[:notice] = "This deck will automatically shuffle after you complete the last card."
-      end
-    end
   end
 
   def new
@@ -44,7 +29,10 @@ class DecksController < ApplicationController
 
   def update
     @deck.update(deck_params)
-    redirect_to deck_path(@deck)
+    respond_to do |format|
+      format.json { head :ok }
+      format.html { redirect_to deck_path(@deck) }
+    end
   end
 
   def destroy
@@ -54,7 +42,7 @@ class DecksController < ApplicationController
 
   def take_cards
     if invalid_take_cards_info?
-      flash[:notice] = "Specify the number of cards to move and one target deck"
+      flash[:notice] = "Specify the number of cards to move, target deck and difficulty"
       return redirect_to edit_deck_path(@deck)
     end
 
@@ -66,35 +54,40 @@ class DecksController < ApplicationController
       move_to_deck = Deck.find(params[:move_to_deck_id])
     end
 
-    cards_to_take = take_from_deck.card_decks.take(params[:number_of_cards].to_i)
     ActiveRecord::Base.transaction(joinable: false) do
-      cards_to_take.each { |card_deck| card_deck.move_to(new_deck: move_to_deck) }
+      take_from_deck.cards.where(difficulty: params[:difficulty].to_i).each do |card|
+        CardDeck.find_by(
+          deck: take_from_deck,
+          card: card
+        ).move_to(new_deck: move_to_deck)
+      end
     end
+
     flash[:success] = "#{cards_to_take.size} #{"card".pluralize(cards_to_take.size)} moved to #{move_to_deck.name}"
 
     redirect_to decks_path
   end
 
   def next_card
-    next_card = Card.next_card_in(deck: @deck)
+    next_card = @deck.next_card
     next_card.increment!(:review_count, touch: true)
     respond_to do |format|
       format.html { redirect_to deck_path(@deck) }
       format.js {
         @current_card = next_card
-        @progress = deck_progress
+        @progress = @deck.progress
       }
     end
   end
 
   def previous_card
-    previous_card = Card.previous_card_in(deck: @deck)
+    previous_card = @deck.previous_card
     previous_card.increment!(:review_count, touch: true)
     respond_to do |format|
       format.html { redirect_to deck_path(@deck) }
       format.js {
         @current_card = previous_card
-        @progress = deck_progress
+        @progress = @deck.progress
         render '/decks/next_card'
       }
     end
@@ -103,13 +96,24 @@ class DecksController < ApplicationController
   def shuffle
     @deck.shuffle
     flash[:success] = "Deck shuffled!"
-    redirect_to edit_deck_path(@deck)
+    redirect_to deck_path(@deck)
+  end
+
+  def study
+    @current_card = @deck.current_card
+    unless @current_card
+      flash[:notice] = "No cards match have a difficulty of #{@deck.maximum_difficulty} or lower in this deck"
+      return redirect_to deck_path(@deck)
+    end
+
+    @current_card.increment!(:review_count, touch: true)
+    @progress = @deck.progress
   end
 
   private
 
   def deck_params
-    params.require(:deck).permit(:name, :start_with, :is_randomized)
+    params.require(:deck).permit(:name, :start_with, :is_randomized, :maximum_difficulty)
   end
 
   def set_deck
@@ -133,10 +137,6 @@ class DecksController < ApplicationController
   end
 
   def invalid_take_cards_info?
-    (params[:take_from_deck_id].blank? && params[:move_to_deck_id].blank?) || (params[:take_from_deck_id].present? && params[:move_to_deck_id].present?) || params[:number_of_cards].to_i.zero?
-  end
-
-  def deck_progress
-    "#{@deck.position_of(card: @current_card)} / #{@deck.card_decks.size}"
+    (params[:take_from_deck_id].blank? && params[:move_to_deck_id].blank?) || (params[:take_from_deck_id].present? && params[:move_to_deck_id].present?) || params[:number_of_cards].to_i.zero? || params[:difficulty].to_i.zero?
   end
 end

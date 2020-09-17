@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2020_09_15_041715) do
+ActiveRecord::Schema.define(version: 2020_09_17_015039) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -55,6 +55,7 @@ ActiveRecord::Schema.define(version: 2020_09_15_041715) do
     t.bigint "review_count", default: 0
     t.datetime "created_at", precision: 6, null: false
     t.datetime "updated_at", precision: 6, null: false
+    t.integer "difficulty", default: 5
     t.index ["english", "kana"], name: "index_cards_on_english_and_kana", unique: true
   end
 
@@ -64,6 +65,7 @@ ActiveRecord::Schema.define(version: 2020_09_15_041715) do
     t.boolean "is_randomized", default: false
     t.datetime "created_at", precision: 6, null: false
     t.datetime "updated_at", precision: 6, null: false
+    t.integer "maximum_difficulty", default: 5
   end
 
   create_table "users", force: :cascade do |t|

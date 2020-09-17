@@ -9,27 +9,10 @@ class DeckTest < ActiveSupport::TestCase
       end
     end
 
-    it "sets was_just_shuffled property for the deck" do
-      deck = decks(:study_now)
-      assert_nil deck.was_just_shuffled
-      deck.shuffle
-      assert deck.was_just_shuffled
-    end
-
     it "does not create duplicate card_deck positions" do
       deck = decks(:study_now)
       deck.shuffle
       deck.card_decks.pluck(:position).uniq.size == deck.card_decks.size
-    end
-  end
-
-  describe "#position_of" do
-    it "returns the position of the specified card" do
-      assert_equal 2, decks(:study_now).position_of(card: cards(:dog))
-    end
-
-    it "returns nil when a deck has no cards" do
-      assert_nil decks(:study_later).position_of(card: nil)
     end
   end
 

@@ -3,9 +3,8 @@ class Deck < ApplicationRecord
   has_many :cards, through: :card_decks
 
   validates :name, presence: true
+  validates :maximum_difficulty, inclusion: { in: Card::DIFFICULTIES }
   validate :start_with_valid
-
-  attr_accessor :was_just_shuffled
 
   VALID_START_WITH_VALUES = ["kana", "kanji", "english", "audio_sample"].freeze
 
@@ -17,13 +16,46 @@ class Deck < ApplicationRecord
       new_positions = (1..card_decks.size).to_a.shuffle
       card_decks.map { |card_deck| card_deck.update(position: new_positions.pop) }
     end
-    @was_just_shuffled = true
     self
   end
 
-  def position_of(card:)
-    return unless card.present?
-    CardDeck.find_by(deck: self, card: card).position
+  def cards_to_study
+    @cards_to_study ||= cards.where(difficulty: Card::DIFFICULTIES.min..maximum_difficulty)
+  end
+
+  def current_card
+    Card.joins(card_decks: [:deck]).where(
+      card_decks: { deck_id: id, status: CardDeck::CURRENT_CARD },
+      difficulty: Card::DIFFICULTIES.min..maximum_difficulty
+    ).first || begin
+      current_card = cards_to_study.first
+      CardDeck.find_by(card: current_card, deck: self)&.update(status: CardDeck::CURRENT_CARD)
+      current_card
+    end
+  end
+
+  def next_card
+    Deck.transaction(requires_new: true) do
+      index = cards_to_study.index { |c| c.id == current_card.id }
+      next_card = cards_to_study[index + 1] || cards_to_study[0]
+      CardDeck.find_by(deck: self, status: CardDeck::CURRENT_CARD).update(status: nil)
+      CardDeck.find_by(card: next_card, deck: self).update(status: CardDeck::CURRENT_CARD)
+      next_card
+    end
+  end
+
+  def previous_card
+    Deck.transaction(requires_new: true) do
+      index = cards_to_study.index { |c| c.id == current_card.id }
+      previous_card = cards_to_study[index - 1]
+      CardDeck.find_by(deck: self, status: CardDeck::CURRENT_CARD).update(status: nil)
+      CardDeck.find_by(card: previous_card, deck: self).update(status: CardDeck::CURRENT_CARD)
+      previous_card
+    end
+  end
+
+  def progress
+    "#{cards_to_study.index { |c| c.id == current_card.id } + 1} / #{cards_to_study.size}"
   end
 
   private
