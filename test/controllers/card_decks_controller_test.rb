@@ -25,6 +25,7 @@ class CardDecksControllerTest < ActionDispatch::IntegrationTest
         assert_difference "CardDeck.count", 1 do
           post card_decks_path, params: { card_deck: { card_id: cards(:cat).id, deck_id: decks(:study_later).id } }
         end
+        assert_response :success
       end
     end
   end
@@ -52,6 +53,7 @@ class CardDecksControllerTest < ActionDispatch::IntegrationTest
         assert_difference "CardDeck.count", -1 do
           delete card_deck_path(card_decks(:cat_study_now), format: :js)
         end
+        assert_response :success
       end
     end
   end
@@ -79,6 +81,7 @@ class CardDecksControllerTest < ActionDispatch::IntegrationTest
         assert_changes -> { CardDeck.find(card_decks(:cat_study_now).id).position } do
           patch sort_card_decks_path(card_decks(:cat_study_now), format: :js), params: { card_id: cards(:cat).id, deck_id: decks(:study_now).id, position: 2 }
         end
+        assert_response :success
       end
     end
   end

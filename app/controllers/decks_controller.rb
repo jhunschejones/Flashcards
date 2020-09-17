@@ -54,17 +54,12 @@ class DecksController < ApplicationController
       move_to_deck = Deck.find(params[:move_to_deck_id])
     end
 
+    cards_to_take = take_from_deck.cards.where(difficulty: params[:difficulty].to_i).take(params[:number_of_cards].to_i)
     ActiveRecord::Base.transaction(joinable: false) do
-      take_from_deck.cards.where(difficulty: params[:difficulty].to_i).each do |card|
-        CardDeck.find_by(
-          deck: take_from_deck,
-          card: card
-        ).move_to(new_deck: move_to_deck)
-      end
+      cards_to_take.each { |card| CardDeck.find_by(deck: take_from_deck, card: card).move_to(new_deck: move_to_deck) }
     end
 
     flash[:success] = "#{cards_to_take.size} #{"card".pluralize(cards_to_take.size)} moved to #{move_to_deck.name}"
-
     redirect_to decks_path
   end
 

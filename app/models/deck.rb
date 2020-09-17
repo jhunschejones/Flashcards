@@ -20,7 +20,11 @@ class Deck < ApplicationRecord
     self
   end
 
-  def cards_to_study
+  def cards_to_study(shuffled = false)
+    if shuffled
+      # Reset cache if deck was just shuffled
+      @cards_to_study = cards.where(difficulty: minimum_difficulty..maximum_difficulty)
+    end
     @cards_to_study ||= cards.where(difficulty: minimum_difficulty..maximum_difficulty)
   end
 
@@ -30,7 +34,8 @@ class Deck < ApplicationRecord
       difficulty: minimum_difficulty..maximum_difficulty
     ).first || begin
       current_card = cards_to_study.first
-      CardDeck.find_by(card: current_card, deck: self)&.update(status: CardDeck::CURRENT_CARD)
+      CardDeck.where(deck: self, status: CardDeck::CURRENT_CARD).update(status: nil)
+      CardDeck.find_by(deck: self, card: current_card)&.update(status: CardDeck::CURRENT_CARD)
       current_card
     end
   end
@@ -39,9 +44,11 @@ class Deck < ApplicationRecord
     Deck.transaction(requires_new: true) do
       index = cards_to_study.index { |c| c.id == current_card.id }
       return unless index.present?
-      next_card = cards_to_study[index + 1] || cards_to_study[0]
-      CardDeck.find_by(deck: self, status: CardDeck::CURRENT_CARD).update(status: nil)
-      CardDeck.find_by(card: next_card, deck: self).update(status: CardDeck::CURRENT_CARD)
+      next_card = cards_to_study[index + 1] || begin
+        is_randomized ? shuffle.reload.cards_to_study(true)[0] : cards_to_study[0]
+      end
+      CardDeck.where(deck: self, status: CardDeck::CURRENT_CARD).update(status: nil)
+      CardDeck.find_by(deck: self, card: next_card).update(status: CardDeck::CURRENT_CARD)
       next_card
     end
   end
@@ -51,14 +58,16 @@ class Deck < ApplicationRecord
       index = cards_to_study.index { |c| c.id == current_card.id }
       return unless index.present?
       previous_card = cards_to_study[index - 1]
-      CardDeck.find_by(deck: self, status: CardDeck::CURRENT_CARD).update(status: nil)
-      CardDeck.find_by(card: previous_card, deck: self).update(status: CardDeck::CURRENT_CARD)
+      CardDeck.where(deck: self, status: CardDeck::CURRENT_CARD).update(status: nil)
+      CardDeck.find_by(deck: self, card: previous_card).update(status: CardDeck::CURRENT_CARD)
       previous_card
     end
   end
 
   def progress
-    "#{cards_to_study.index { |c| c.id == current_card.id } + 1} / #{cards_to_study.size}"
+    current_card_position = cards_to_study.index { |c| c.id == current_card.id }
+    return unless current_card_position
+    "#{current_card_position + 1} / #{cards_to_study.size}"
   end
 
   private

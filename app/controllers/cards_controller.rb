@@ -31,6 +31,19 @@ class CardsController < ApplicationController
   end
 
   def update
+    # If we are updating the difficulty, the cards_to_study query may lose it's
+    # place in the deck. We need to check if the new difficulty falls within the
+    # decks's difficulty range, and if so move the current card marker back to
+    # the last card still in range before updating this card.
+    if card_params[:difficulty]
+      CardDeck.where(card: @card, status: CardDeck::CURRENT_CARD).each do |card_deck|
+        deck = card_deck.deck
+        unless (deck.minimum_difficulty..deck.maximum_difficulty).include?(card_params[:difficulty].to_i)
+          deck.previous_card
+        end
+      end
+    end
+
     @card.update(card_params)
     respond_to do |format|
       format.json { head :ok }
