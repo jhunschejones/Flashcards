@@ -35,7 +35,7 @@
       <div class="field">
         <%= f.label "Create in deck" %><br/>
         <div class="select is-small">
-          <%= f.select :deck_id, options_from_collection_for_select(@decks, "id", "name"), prompt: "Choose deck..." %>
+          <%= f.select :deck_id, options_from_collection_for_select(@decks, "id", "name") %>
         </div>
       </div>
 
