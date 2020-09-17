@@ -1,7 +1,7 @@
 import { Controller } from "stimulus"
 
 export default class extends Controller {
-  static targets = [ "englishText", "kanaText", "kanjiText", "audioSample", "loader", "cardOptions" ]
+  static targets = [ "englishText", "kanaText", "kanjiText", "audioSample", "loader", "cardOptions", "editCard" ]
 
   initialize() {
     this.isFlipped = false;
@@ -40,6 +40,7 @@ export default class extends Controller {
 
   showFrontOfCard() {
     this.cardOptionsTarget.style.display = "none";
+    this.editCardTarget.style.display = "none";
     switch(this.data.get("startWith")) {
       case "english":
         this.englishTextTarget.style.display = "block";
@@ -77,6 +78,7 @@ export default class extends Controller {
 
   showBackOfCard() {
     this.cardOptionsTarget.style.display = "none";
+    this.editCardTarget.style.display = "none";
     switch(this.data.get("startWith")) {
       case "english":
         this.englishTextTarget.style.display = "none";
@@ -121,6 +123,7 @@ export default class extends Controller {
     }
 
     this.cardOptionsTarget.style.display = "block";
+    this.editCardTarget.style.display = "block";
   }
 
   toggleCardOptions() {

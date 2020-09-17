@@ -15,9 +15,21 @@
   <div class="difficulty-options">
     <% Card::DIFFICULTIES.each do |difficulty| %>
       <% if difficulty == @deck.maximum_difficulty %>
-        <button class="button is-success" data-action="click->deck#selectDifficulty"><%= difficulty %></button>
+        <button class="button maximum-difficulty is-success" data-action="click->deck#selectMaximumDifficulty"><%= difficulty %></button>
       <% else %>
-        <button class="button is-white" data-action="click->deck#selectDifficulty"><%= difficulty %></button>
+        <button class="button maximum-difficulty is-white" data-action="click->deck#selectMaximumDifficulty"><%= difficulty %></button>
+      <% end %>
+    <% end %>
+  </div>
+
+  <br/>
+  <h2 class="specify-difficulty">Minimum difficulty</h2>
+  <div class="difficulty-options">
+    <% Card::DIFFICULTIES.each do |difficulty| %>
+      <% if difficulty == @deck.minimum_difficulty %>
+        <button class="button minimum-difficulty is-success" data-action="click->deck#selectMinimumDifficulty"><%= difficulty %></button>
+      <% else %>
+        <button class="button minimum-difficulty is-white" data-action="click->deck#selectMinimumDifficulty"><%= difficulty %></button>
       <% end %>
     <% end %>
   </div>

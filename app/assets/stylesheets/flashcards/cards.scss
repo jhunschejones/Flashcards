@@ -10,10 +10,11 @@
     max-width: 625px;
     min-height: 200px;
     background-color: $card-background;
-    box-shadow: $shallow-box-shadow;
+    box-shadow: 0 3px 6px rgba(0,0,0,0.16), 0 3px 6px rgba(0,0,0,0.23);
     border-radius: 9px;
-    margin: 0px 12px 12px 12px;
+    margin: 40px 12px 12px 12px;
     padding: 12px;
+    position: relative;
     .english-text,
     .kana-text,
     .kanji-text {
@@ -23,6 +24,12 @@
       .play-audio-sample-button {
         margin: 6px 0px;
       }
+    }
+    .card-edit-button {
+      position: absolute;
+      bottom: 8px;
+      right: 10px;
+      opacity: 0.7;
     }
   }
 }

@@ -6,6 +6,7 @@
   var audioSample = document.querySelector(".audio-sample");
   var deckProgressLabel = document.querySelector(".deck-progress small");
   var cardInteractionContainer = document.querySelector(".card-interaction-container");
+  var editCardButton = document.querySelector(".card-edit-button");
 
   loader.classList.remove("is-active");
   englishText.innerHTML = "<%= @current_card.english %>";
@@ -19,5 +20,6 @@
   <% end %>
 
   deckProgressLabel.innerHTML = "<%= @progress %>";
+  editCardButton.href = "<%= edit_card_url(@current_card.id) %>";
   cardInteractionContainer.dataset.deckCardUpdateUrl = "<%= card_path(@current_card) %>";
 }());

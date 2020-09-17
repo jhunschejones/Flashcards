@@ -78,6 +78,7 @@
       .english-text,
       .kana-text,
       .kanji-text {
+        margin: 0px 26px;
         font-size: 2em;
         display: none;
       }
@@ -96,6 +97,13 @@
         position: absolute;
         left: 0px;
         opacity: 0.7;
+      }
+      .card-edit-button {
+        position: absolute;
+        bottom: 8px;
+        right: 11px;
+        opacity: 0.7;
+        display: none;
       }
       .card-options {
         display: none;

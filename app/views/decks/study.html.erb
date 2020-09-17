@@ -49,6 +49,12 @@
           <button class="button is-light" data-action="click->study#setCardDifficulty">4</button>
           <button class="button is-light" data-action="click->study#setCardDifficulty">5</button>
         </div>
+
+        <%= link_to(edit_card_path(@current_card), class: "has-text-grey-lighter card-edit-button", data: { target: "study.editCard" } ) do %>
+          <span class="icon is-small">
+            <i class="fas fa-edit"></i>
+          </span>
+        <% end %>
       </div>
     </div>
   <% end %>
