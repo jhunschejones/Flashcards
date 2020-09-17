@@ -40,13 +40,16 @@
         <input name="number_of_cards" type="text" class="input" autocomplete="off" />
       </div>
       <div class="select is-small">
-        <%= select_tag :take_from_deck_id, options_from_collection_for_select(@availible_decks, "id", "name"), prompt: "Take from..." %>
+        <%= select_tag :take_from_deck_id, options_from_collection_for_select(@availible_decks, "id", "name"), prompt: "Take from deck..." %>
       </div>
       <div class="select is-small">
-        <%= select_tag :move_to_deck_id, options_from_collection_for_select(@availible_decks, "id", "name"), prompt: "Move to..." %>
+        <%= select_tag :move_to_deck_id, options_from_collection_for_select(@availible_decks, "id", "name"), prompt: "Move to deck..." %>
       </div>
       <div class="select is-small">
-        <%= select_tag :difficulty, options_for_select(Card::DIFFICULTIES), prompt: "Difficulty..." %>
+        <%= select_tag :maximum_difficulty, options_for_select(Card::DIFFICULTIES), prompt: "Max difficulty..." %>
+      </div>
+      <div class="select is-small">
+        <%= select_tag :minimum_difficulty, options_for_select(Card::DIFFICULTIES), prompt: "Min difficulty..." %>
       </div>
 
       <br/><br/>

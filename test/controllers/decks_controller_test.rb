@@ -246,12 +246,12 @@ class DecksControllerTest < ActionDispatch::IntegrationTest
     describe "when no user is logged in" do
       it "no cards are changed" do
         assert_no_difference "CardDeck.where(deck: decks(:study_now)).count" do
-          patch take_cards_deck_path(decks(:study_later)), params: { take_from_deck_id: decks(:study_now).id, number_of_cards: 5, difficulty: 5 }
+          patch take_cards_deck_path(decks(:study_later)), params: { take_from_deck_id: decks(:study_now).id, number_of_cards: 5, maximum_difficulty: 5, minimum_difficulty: 1 }
         end
       end
 
       it "redirects to the login page" do
-        patch take_cards_deck_path(decks(:study_later)), params: { take_from_deck_id: decks(:study_now).id, number_of_cards: 5, difficulty: 5 }
+        patch take_cards_deck_path(decks(:study_later)), params: { take_from_deck_id: decks(:study_now).id, number_of_cards: 5, maximum_difficulty: 5, minimum_difficulty: 1 }
         assert_redirected_to login_path
       end
     end
@@ -264,18 +264,18 @@ class DecksControllerTest < ActionDispatch::IntegrationTest
       describe "when taking from other deck" do
         it "removes the cards from the other deck" do
           assert_difference "CardDeck.where(deck: decks(:study_now)).count", -5 do
-            patch take_cards_deck_path(decks(:study_later)), params: { take_from_deck_id: decks(:study_now).id, number_of_cards: 5, difficulty: 5 }
+            patch take_cards_deck_path(decks(:study_later)), params: { take_from_deck_id: decks(:study_now).id, number_of_cards: 5, maximum_difficulty: 5, minimum_difficulty: 1 }
           end
         end
 
         it "adds the cards to the current deck" do
           assert_difference "CardDeck.where(deck: decks(:study_later)).count", 5 do
-            patch take_cards_deck_path(decks(:study_later)), params: { take_from_deck_id: decks(:study_now).id, number_of_cards: 5, difficulty: 5 }
+            patch take_cards_deck_path(decks(:study_later)), params: { take_from_deck_id: decks(:study_now).id, number_of_cards: 5, maximum_difficulty: 5, minimum_difficulty: 1 }
           end
         end
 
         it "redirects to decks page with message" do
-          patch take_cards_deck_path(decks(:study_later)), params: { take_from_deck_id: decks(:study_now).id, number_of_cards: 5, difficulty: 5 }
+          patch take_cards_deck_path(decks(:study_later)), params: { take_from_deck_id: decks(:study_now).id, number_of_cards: 5, maximum_difficulty: 5, minimum_difficulty: 1 }
           assert_redirected_to decks_path
           assert_equal "5 cards moved to Study Later", flash[:success]
         end
@@ -284,18 +284,18 @@ class DecksControllerTest < ActionDispatch::IntegrationTest
       describe "when moving to other deck" do
         it "removes the cards from the current deck" do
           assert_difference "CardDeck.where(deck: decks(:study_now)).count", -5 do
-            patch take_cards_deck_path(decks(:study_now)), params: { move_to_deck_id: decks(:study_later).id, number_of_cards: 5, difficulty: 5 }
+            patch take_cards_deck_path(decks(:study_now)), params: { move_to_deck_id: decks(:study_later).id, number_of_cards: 5, maximum_difficulty: 5, minimum_difficulty: 1 }
           end
         end
 
         it "adds the cards to the other deck" do
           assert_difference "CardDeck.where(deck: decks(:study_later)).count", 5 do
-            patch take_cards_deck_path(decks(:study_now)), params: { move_to_deck_id: decks(:study_later).id, number_of_cards: 5, difficulty: 5 }
+            patch take_cards_deck_path(decks(:study_now)), params: { move_to_deck_id: decks(:study_later).id, number_of_cards: 5, maximum_difficulty: 5, minimum_difficulty: 1 }
           end
         end
 
         it "redirects to decks path with message" do
-          patch take_cards_deck_path(decks(:study_now)), params: { move_to_deck_id: decks(:study_later).id, number_of_cards: 5, difficulty: 5 }
+          patch take_cards_deck_path(decks(:study_now)), params: { move_to_deck_id: decks(:study_later).id, number_of_cards: 5, maximum_difficulty: 5, minimum_difficulty: 1 }
           assert_redirected_to decks_path
           assert_equal "5 cards moved to Study Later", flash[:success]
         end
@@ -307,18 +307,18 @@ class DecksControllerTest < ActionDispatch::IntegrationTest
 
           it "removes the cards from the current deck" do
             assert_difference "CardDeck.where(deck: decks(:study_now)).count", -5 do
-              patch take_cards_deck_path(decks(:study_now)), params: { move_to_deck_id: decks(:study_later).id, number_of_cards: 5, difficulty: 5 }
+              patch take_cards_deck_path(decks(:study_now)), params: { move_to_deck_id: decks(:study_later).id, number_of_cards: 5, maximum_difficulty: 5, minimum_difficulty: 1 }
             end
           end
 
           it "adds only the non-duplicate cards to the other deck" do
             assert_difference "CardDeck.where(deck: decks(:study_later)).count", 4 do
-              patch take_cards_deck_path(decks(:study_now)), params: { move_to_deck_id: decks(:study_later).id, number_of_cards: 5, difficulty: 5 }
+              patch take_cards_deck_path(decks(:study_now)), params: { move_to_deck_id: decks(:study_later).id, number_of_cards: 5, maximum_difficulty: 5, minimum_difficulty: 1 }
             end
           end
 
           it "redirects to decks path with message" do
-            patch take_cards_deck_path(decks(:study_now)), params: { move_to_deck_id: decks(:study_later).id, number_of_cards: 5, difficulty: 5 }
+            patch take_cards_deck_path(decks(:study_now)), params: { move_to_deck_id: decks(:study_later).id, number_of_cards: 5, maximum_difficulty: 5, minimum_difficulty: 1 }
             assert_redirected_to decks_path
             assert_equal "5 cards moved to Study Later", flash[:success]
           end
@@ -327,18 +327,18 @@ class DecksControllerTest < ActionDispatch::IntegrationTest
         describe "when more cards are requested than exist" do
           it "removes all the cards from the current deck" do
             assert_difference "CardDeck.where(deck: decks(:study_now)).count", -12 do
-              patch take_cards_deck_path(decks(:study_now)), params: { move_to_deck_id: decks(:study_later).id, number_of_cards: 50, difficulty: 5 }
+              patch take_cards_deck_path(decks(:study_now)), params: { move_to_deck_id: decks(:study_later).id, number_of_cards: 50, maximum_difficulty: 5, minimum_difficulty: 1 }
             end
           end
 
           it "adds all the cards to the other deck" do
             assert_difference "CardDeck.where(deck: decks(:study_later)).count", 12 do
-              patch take_cards_deck_path(decks(:study_now)), params: { move_to_deck_id: decks(:study_later).id, number_of_cards: 50, difficulty: 5 }
+              patch take_cards_deck_path(decks(:study_now)), params: { move_to_deck_id: decks(:study_later).id, number_of_cards: 50, maximum_difficulty: 5, minimum_difficulty: 1 }
             end
           end
 
           it "redirects to decks path with message" do
-            patch take_cards_deck_path(decks(:study_now)), params: { move_to_deck_id: decks(:study_later).id, number_of_cards: 50, difficulty: 5 }
+            patch take_cards_deck_path(decks(:study_now)), params: { move_to_deck_id: decks(:study_later).id, number_of_cards: 50, maximum_difficulty: 5, minimum_difficulty: 1 }
             assert_redirected_to decks_path
             assert_equal "12 cards moved to Study Later", flash[:success]
           end
@@ -348,21 +348,21 @@ class DecksControllerTest < ActionDispatch::IntegrationTest
       describe "with invalid params" do
         it "redirects to the edit deck path when too many decks are specified" do
           assert_no_difference "CardDeck.where(deck: decks(:study_now)).count" do
-            patch take_cards_deck_path(decks(:study_now)), params: { move_to_deck_id: decks(:study_later).id, take_from_deck_id: decks(:study_now).id, number_of_cards: 5, difficulty: 5 }
+            patch take_cards_deck_path(decks(:study_now)), params: { move_to_deck_id: decks(:study_later).id, take_from_deck_id: decks(:study_now).id, number_of_cards: 5, maximum_difficulty: 5, minimum_difficulty: 1 }
           end
           assert_redirected_to edit_deck_path(decks(:study_now))
         end
 
         it "redirects to the edit deck path when too few decks are specified" do
           assert_no_difference "CardDeck.where(deck: decks(:study_now)).count" do
-            patch take_cards_deck_path(decks(:study_now)), params: { number_of_cards: 5, difficulty: 5 }
+            patch take_cards_deck_path(decks(:study_now)), params: { number_of_cards: 5, maximum_difficulty: 5, minimum_difficulty: 1 }
           end
           assert_redirected_to edit_deck_path(decks(:study_now))
         end
 
         it "redirects to the edit deck path when no card count is specified" do
           assert_no_difference "CardDeck.where(deck: decks(:study_now)).count" do
-            patch take_cards_deck_path(decks(:study_now)), params: { move_to_deck_id: decks(:study_later).id, difficulty: 5 }
+            patch take_cards_deck_path(decks(:study_now)), params: { move_to_deck_id: decks(:study_later).id, maximum_difficulty: 5, minimum_difficulty: 1 }
           end
           assert_redirected_to edit_deck_path(decks(:study_now))
         end

@@ -54,7 +54,9 @@ class DecksController < ApplicationController
       move_to_deck = Deck.find(params[:move_to_deck_id])
     end
 
-    cards_to_take = take_from_deck.cards.where(difficulty: params[:difficulty].to_i).take(params[:number_of_cards].to_i)
+    cards_to_take = take_from_deck.cards
+      .where(difficulty: params[:minimum_difficulty].to_i..params[:maximum_difficulty].to_i)
+      .take(params[:number_of_cards].to_i)
     ActiveRecord::Base.transaction(joinable: false) do
       cards_to_take.each { |card| CardDeck.find_by(deck: take_from_deck, card: card).move_to(new_deck: move_to_deck) }
     end
@@ -140,7 +142,7 @@ class DecksController < ApplicationController
   end
 
   def invalid_take_cards_info?
-    (params[:take_from_deck_id].blank? && params[:move_to_deck_id].blank?) || (params[:take_from_deck_id].present? && params[:move_to_deck_id].present?) || params[:number_of_cards].to_i.zero? || params[:difficulty].to_i.zero?
+    (params[:take_from_deck_id].blank? && params[:move_to_deck_id].blank?) || (params[:take_from_deck_id].present? && params[:move_to_deck_id].present?) || params[:number_of_cards].to_i.zero?
   end
 
   def show_no_matching_cards_message
