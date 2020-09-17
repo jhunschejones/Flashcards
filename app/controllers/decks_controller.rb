@@ -31,7 +31,7 @@ class DecksController < ApplicationController
     @deck.update(deck_params)
     respond_to do |format|
       format.json { head :ok }
-      format.html { redirect_to deck_path(@deck) }
+      format.html { redirect_to decks_path }
     end
   end
 

@@ -2,7 +2,7 @@
   <div class="edit-resource-form-container">
     <h2 class="title is-4">Edit deck</h2>
 
-    <%= form_with(model: @deck, url: deck_path(@deck), class: "edit-deck-form") do |f| %>
+    <%= form_with(model: @deck, url: deck_path(@deck), class: "edit-deck-form", local: true) do |f| %>
       <div class="field">
         <%= f.label :name %>
         <%= f.text_field :name, autocomplete: 'off', class: "input" %>

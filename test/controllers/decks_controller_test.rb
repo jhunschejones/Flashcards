@@ -200,13 +200,11 @@ class DecksControllerTest < ActionDispatch::IntegrationTest
           assert_equal "JLPT Review", Deck.find(decks(:study_now).id).name
         end
 
-        it "redirects to the deck page" do
+        it "redirects to the decks page" do
           patch deck_path(decks(:study_now)), params: { deck: { name: "JLPT Review" } }
-          assert_redirected_to deck_path(decks(:study_now))
+          assert_redirected_to decks_path
           follow_redirect!
-          assert_select "h1.deck-name", "JLPT Review"
-          assert_select "button.maximum-difficulty", count: 5
-          assert_select "button.minimum-difficulty", count: 5
+          assert_select "div.all-decks-container"
         end
       end
     end

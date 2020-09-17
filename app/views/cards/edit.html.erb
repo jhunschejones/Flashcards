@@ -2,7 +2,7 @@
   <div class="edit-resource-form-container" data-controller="card">
     <h2 class="title is-4">Edit card</h2>
 
-    <%= form_with(model: @card, url: card_path(@card)) do |f| %>
+    <%= form_with(model: @card, url: card_path(@card), local: true) do |f| %>
       <div class="field">
         <%= f.label :english %>
         <%= f.text_field :english, autocomplete: 'off', class: "input" %>
