@@ -2,7 +2,7 @@
   <div class="edit-resource-form-container">
     <h2 class="title is-4">Edit deck</h2>
 
-    <%= form_with(model: @deck, url: deck_path(@deck), class: "edit-deck-form") do |f| %>
+    <%= form_with(model: @deck, url: deck_path(@deck), class: "edit-deck-form", local: true) do |f| %>
       <div class="field">
         <%= f.label :name %>
         <%= f.text_field :name, autocomplete: 'off', class: "input" %>
@@ -24,13 +24,7 @@
 
       <div class="actions">
         <%= f.submit "Update", class: "button is-info" %>
-        <%= link_to "View", deck_path(@deck), class: "button is-info is-outlined view-deck-button" %>
-      </div>
-    <% end %>
-
-    <%= form_tag(shuffle_deck_path(@deck), method: :patch, class: "shuffle-deck-form") do %>
-      <div class="actions">
-        <%= submit_tag "Shuffle", data: { confirm: "Are you sure you want to shuffle this deck? This action is permanent and cannot be undone." }, class: "button is-info is-outlined" %>
+        <%= link_to "Back", :back, class: "button is-info is-outlined" %>
       </div>
     <% end %>
   </div>
@@ -51,6 +45,13 @@
       <div class="select is-small">
         <%= select_tag :move_to_deck_id, options_from_collection_for_select(@availible_decks, "id", "name"), prompt: "Move to deck..." %>
       </div>
+      <div class="select is-small">
+        <%= select_tag :maximum_difficulty, options_for_select(Card::DIFFICULTIES), prompt: "Max difficulty..." %>
+      </div>
+      <div class="select is-small">
+        <%= select_tag :minimum_difficulty, options_for_select(Card::DIFFICULTIES), prompt: "Min difficulty..." %>
+      </div>
+
       <br/><br/>
       <%= submit_tag "Move cards", data: { confirm: "Are you sure you want move cards between decks? This action is permanent and cannot be undone." }, class: "button is-info" %>
       <%= link_to("Sort cards", sort_cards_deck_path(@deck), class: "button is-info is-outlined sort-cards-button") %>

@@ -8,5 +8,10 @@
         <%= render(template: 'decks/_play_audio_sample_button', locals: { current_card: @card }) %>
       <% end %>
     </div>
+    <%= link_to(edit_card_path(@card), class: "has-text-grey-lighter card-edit-button") do %>
+      <span class="icon is-small">
+        <i class="fas fa-edit"></i>
+      </span>
+    <% end %>
   </div>
 </div>

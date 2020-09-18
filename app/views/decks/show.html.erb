@@ -1,65 +1,51 @@
-<div class="deck-show-container">
+<div class="deck-show-container" data-controller="deck" data-deck-update-url="<%= deck_path(@deck) %>">
   <h1 class="title deck-name"><%= @deck.name %></h1>
 
-  <% if @current_card %>
-    <div class="card-interaction-container" data-controller="card deck" data-deck-start-with="<%= @deck.start_with %>">
-      <div class="next-card"></div>
-      <div class="deck-show-card">
-        <span class="deck-progress has-text-grey-lighter"><%= @progress %></span>
-        <%= link_to(edit_card_path(@current_card), class: "has-text-grey-lighter card-edit-button") do %>
-          <span class="icon is-small">
-            <i class="fas fa-edit"></i>
-          </span>
-        <% end %>
-        <div class="english-text" data-target="deck.englishText">
-          <%= @current_card.english %>
-        </div>
-        <div class="kana-text" data-target="deck.kanaText">
-          <%= @current_card.kana %>
-        </div>
-        <div class="kanji-text" data-target="deck.kanjiText">
-          <%= @current_card.kanji %>
-        </div>
-        <div class="audio-sample" data-target="deck.audioSample">
-          <% if @current_card.audio_sample.attached? %>
-            <%= render(template: 'decks/_play_audio_sample_button', locals: { current_card: @current_card }) %>
-          <% end %>
-        </div>
-        <div class="loader-wrapper" data-target="deck.loader">
-            <div class="loader is-loading"></div>
-        </div>
+  <div class="actions">
+    <%= form_tag(shuffle_deck_path(@deck), method: :patch, class: "shuffle-deck-form") do %>
+      <div class="actions">
+        <%= submit_tag "Shuffle", data: { confirm: "Are you sure you want to shuffle this deck? This action is permanent and cannot be undone." }, class: "button is-info is-outlined" %>
       </div>
-      <div class="deck-controls">
-        <%= form_tag(previous_card_in_deck_path(@deck.id), method: :patch, class: "previous-card-form", remote: true) do %>
-          <%= button_tag type: 'submit', class: "button is-info", data: { action: "click->deck#prepareForNextCard" } do %>
-            <span class="icon">
-              <i class="fas fa-2x fa-caret-left"></i>
-            </span>
-          <% end %>
-        <% end %>
+    <% end %>
+    <%= link_to("Edit deck", edit_deck_path(@deck), class: "button is-info is-outlined") %>
+  </div>
 
-        <button class="button is-info flip-card-button" data-action="click->deck#flipCard">
-          Flip card
-        </button>
+  <br/>
+  <h2 class="specify-difficulty">Max difficulty</h2>
+  <div class="difficulty-options">
+    <% Card::DIFFICULTIES.each do |difficulty| %>
+      <% if difficulty == @deck.maximum_difficulty %>
+        <button class="button maximum-difficulty is-success" data-action="click->deck#selectMaximumDifficulty"><%= difficulty %></button>
+      <% else %>
+        <button class="button maximum-difficulty is-white" data-action="click->deck#selectMaximumDifficulty"><%= difficulty %></button>
+      <% end %>
+    <% end %>
+  </div>
 
-        <%= form_tag(next_card_in_deck_path(@deck.id), method: :patch, class: "next-card-form", remote: true) do %>
-          <%= button_tag type: 'submit', class: "button is-info", data: { action: "click->deck#prepareForNextCard" } do %>
-            <span class="icon">
-              <i class="fas fa-2x fa-caret-right"></i>
-            </span>
-          <% end %>
-        <% end %>
-      </div>
-      <div class="move-card-controls">
-        <%= form_tag(move_decks_card_path(@current_card.id), method: :patch, class: "move-decks-form", remote: true) do %>
-          <%= submit_tag "Move card", class: "button is-danger is-outlined move-card-button", data: { action: "click->deck#prepareForMoveCard" } %>
-          <%= hidden_field_tag :old_deck_id, @deck.id %>
+  <br/>
+  <h2 class="specify-difficulty">Minimum difficulty</h2>
+  <div class="difficulty-options">
+    <% Card::DIFFICULTIES.each do |difficulty| %>
+      <% if difficulty == @deck.minimum_difficulty %>
+        <button class="button minimum-difficulty is-success" data-action="click->deck#selectMinimumDifficulty"><%= difficulty %></button>
+      <% else %>
+        <button class="button minimum-difficulty is-white" data-action="click->deck#selectMinimumDifficulty"><%= difficulty %></button>
+      <% end %>
+    <% end %>
+  </div>
 
-          <div class="select">
-            <%= select_tag :new_deck_id, options_from_collection_for_select(@moveable_decks, "id", "name"), prompt: "Choose new deck...", class: "new-deck-select" %>
-          </div>
-        <% end %>
-      </div>
-    </div>
-  <% end %>
+  <br/>
+  <%= link_to("Study now", study_deck_path(@deck), class: "button is-info", data: { target: "deck.studyNowButton" } ) %>
 </div>
+
+<form name="ignore_me">
+    <input type="hidden" id="page_is_dirty" name="page_is_dirty" value="0" />
+</form>
+
+<script>
+  var dirty_bit = document.getElementById('page_is_dirty');
+  if (dirty_bit.value == '1') {
+    window.location.reload();
+  }
+  dirty_bit.value = '1';
+</script>

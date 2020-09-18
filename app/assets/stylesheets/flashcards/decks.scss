@@ -6,50 +6,79 @@
     margin: 24px 0px;
     color: $dark-text-color;
   }
+  .specify-difficulty {
+    font-size: 1.6rem;
+    font-weight: 700;
+    color: #4a4a4a;
+    margin-top: 10px;
+    margin-bottom: 10px;
+  }
+  .actions {
+    display: inline-block;
+    .shuffle-deck-form {
+      display: inline-block;
+    }
+  }
+}
+
+.deck-study-container {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
   .card-interaction-container {
+    margin-top: 40px;
     display: flex;
     flex-direction: column;
     align-items: center;
     width: 95%;
-    .next-card {
-      width: 95%;
-      max-width: 600px;
-      background-color: $card-background;
-      box-shadow: 0 1px 4px rgba(0,0,0,0.1), 0 10px 30px #f3ece8;
-      border-radius: 9px;
-      height: 30px;
-      margin-bottom: -18px;
-      padding-top: 18px;
-    }
-    .deck-show-card {
+    .deck-card {
       display: flex;
       flex-direction: column;
       justify-content: center;
       text-align: center;
       width: 100%;
       max-width: 625px;
-      min-height: 200px;
+      min-height: 240px;
       background-color: $card-background;
-      box-shadow: $shallow-box-shadow;
+      box-shadow: 0 3px 6px rgba(0,0,0,0.16), 0 3px 6px rgba(0,0,0,0.23);
       border-radius: 9px;
       margin: 0px 12px 12px 12px;
       padding: 12px;
       position: relative;
-      .card-edit-button {
+      .flip-card-button-container {
         position: absolute;
+        margin-left: auto;
+        margin-right: auto;
         top: 6px;
-        right: 10px;
+        left: 0;
+        right: 0;
+        width: 80px;
+        height: 25px;
+        user-select: none;
+        cursor: pointer;
+        .flip-card-button {
+          text-align: center;
+          width: 100%;
+          height: 100%;
+        }
+      }
+      .card-options-button {
+        cursor: pointer;
+        position: absolute;
+        top: 5px;
+        right: 7px;
         opacity: 0.7;
       }
       .deck-progress {
+        user-select: none;
         position: absolute;
-        top: 6px;
-        right: 40px;
-        opacity: 0.7;
+        top: 4px;
+        right: 36px;
       }
       .english-text,
       .kana-text,
       .kanji-text {
+        margin: 0px 26px;
         font-size: 2em;
         display: none;
       }
@@ -59,21 +88,29 @@
           margin-top: 6px;
         }
       }
-    }
-    .deck-controls {
-      display: flex;
-      .flip-card-button {
-        margin: 0px 10px;
+      .next-card-form {
+        position: absolute;
+        right: 0px;
+        opacity: 0.7;
       }
-    }
-    .move-card-controls {
-      margin-top: 50px;
-      .select {
-        select { padding: 6px 32px 6px 10px; }
-        &::after { right: 12px; }
+      .previous-card-form {
+        position: absolute;
+        left: 0px;
+        opacity: 0.7;
       }
-      .move-card-button {
-        padding: 7px 12px;
+      .card-edit-button {
+        position: absolute;
+        bottom: 8px;
+        right: 11px;
+        opacity: 0.7;
+        display: none;
+      }
+      .card-options {
+        display: none;
+        .card-difficulty-label {
+          font-size: 1.2em;
+          margin-bottom: 16px;
+        }
       }
     }
   }
@@ -149,6 +186,9 @@
     }
     .current-card-count {
       margin-bottom: 10px;
+    }
+    .select {
+      margin-bottom: 5px;
     }
   }
 }

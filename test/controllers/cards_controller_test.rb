@@ -174,21 +174,55 @@ class CardsControllerTest < ActionDispatch::IntegrationTest
         login_as(users(:carl))
       end
 
-      it "updates the card record" do
-        assert_changes -> { Card.find(cards(:foot).id).english } do
-          patch card_path(cards(:foot)), params: { card: { english: "foot; leg" } }
+      describe "for html request" do
+        it "updates the card record" do
+          assert_changes -> { Card.find(cards(:foot).id).english } do
+            patch card_path(cards(:foot)), params: { card: { english: "foot; leg" } }
+          end
+          assert_equal "foot; leg", Card.find(cards(:foot).id).english
         end
-        assert_equal "foot; leg", Card.find(cards(:foot).id).english
+
+        it "redirects to the card show page" do
+          patch card_path(cards(:foot)), params: { card: { english: "foot; leg" } }
+          assert_redirected_to card_path(cards(:foot))
+          follow_redirect!
+          assert_select "div.card-details-card"
+          assert_select "div.english-text", "foot; leg"
+          assert_select "div.kana-text", cards(:foot).kana
+          assert_select "div.kanji-text", cards(:foot).kanji
+        end
       end
 
-      it "redirects to the card show page" do
-        patch card_path(cards(:foot)), params: { card: { english: "foot; leg" } }
-        assert_redirected_to card_path(cards(:foot))
-        follow_redirect!
-        assert_select "div.card-details-card"
-        assert_select "div.english-text", "foot; leg"
-        assert_select "div.kana-text", cards(:foot).kana
-        assert_select "div.kanji-text", cards(:foot).kanji
+      describe "for json request" do
+        it "updates the card record" do
+          assert_changes -> { Card.find(cards(:foot).id).english } do
+            patch card_path(cards(:foot), format: :json), params: { card: { english: "foot; leg" } }
+          end
+          assert_response :ok
+          assert_equal "foot; leg", Card.find(cards(:foot).id).english
+        end
+
+        describe "when decks are not affected by the update" do
+          it "does not move the current card pointer" do
+            assert_no_changes -> { CardDeck.find_by(deck: decks(:study_now), status: "current") } do
+              patch card_path(cards(:cat), format: :json), params: { card: { difficulty: 3 } }
+            end
+            assert_equal "current", card_decks(:cat_study_now).status
+          end
+        end
+
+        describe "when update would cause current card to be lost" do
+          before do
+            decks(:study_now).update(minimum_difficulty: 3)
+          end
+
+          it "moves the current card pointer back" do
+            assert_changes -> { CardDeck.find_by(deck: decks(:study_now), status: "current") } do
+              patch card_path(cards(:cat), format: :json), params: { card: { difficulty: 1 } }
+            end
+            assert_equal "current", card_decks(:glass_study_now).status
+          end
+        end
       end
     end
   end
@@ -221,116 +255,6 @@ class CardsControllerTest < ActionDispatch::IntegrationTest
       it "returns expected JS to modify the UI" do
         delete card_path(cards(:cat), format: :js)
         assert_match /var deletedCard = document.querySelector\('\[data-card-id=\"#{cards(:cat).id}\"\]'\);/, response.body
-      end
-    end
-  end
-
-  describe "PATCH move_decks" do
-    describe "when no user is logged in" do
-      it "does not move the card" do
-        assert_no_changes -> { CardDeck.where(card: cards(:cat)) } do
-          patch move_decks_card_path(cards(:cat), format: :js), params: { old_deck_id: decks(:study_now).id, new_deck_id: decks(:study_later).id }
-        end
-      end
-
-      it "redirects to the login page" do
-        patch move_decks_card_path(cards(:cat), format: :js), params: { old_deck_id: decks(:study_now).id, new_deck_id: decks(:study_later).id }
-        assert_redirected_to login_path
-      end
-    end
-
-    describe "when a user is logged in" do
-      before do
-        login_as(users(:carl))
-      end
-
-      it "removes the card from the old deck" do
-        assert_difference "CardDeck.where(card: cards(:cat), deck: decks(:study_now)).count", -1 do
-          patch move_decks_card_path(cards(:cat), format: :js), params: { old_deck_id: decks(:study_now).id, new_deck_id: decks(:study_later).id }
-        end
-      end
-
-      it "adds the card to the new deck" do
-        assert_difference "CardDeck.where(card: cards(:cat), deck: decks(:study_later)).count", 1 do
-          patch move_decks_card_path(cards(:cat), format: :js), params: { old_deck_id: decks(:study_now).id, new_deck_id: decks(:study_later).id }
-        end
-      end
-
-      it "sets the next card in the deck as the new current card" do
-        assert_equal card_decks(:cat_study_now), CardDeck.find_or_set_current_card_deck(deck: decks(:study_now))
-        patch move_decks_card_path(cards(:cat), format: :js), params: { old_deck_id: decks(:study_now).id, new_deck_id: decks(:study_later).id }
-        assert_equal card_decks(:dog_study_now), CardDeck.find_or_set_current_card_deck(deck: decks(:study_now))
-      end
-
-      it "returns expected JS to update the page" do
-        patch move_decks_card_path(cards(:cat), format: :js), params: { old_deck_id: decks(:study_now).id, new_deck_id: decks(:study_later).id }
-        assert_match /englishText.innerHTML = \"#{cards(:dog).english}\"/, response.body
-      end
-
-      describe "when the card is already in the new deck" do
-        before do
-          CardDeck.create(deck: decks(:study_later), card: cards(:cat))
-        end
-
-        it "removes the card from the old deck" do
-          assert_difference "CardDeck.where(card: cards(:cat), deck: decks(:study_now)).count", -1 do
-            patch move_decks_card_path(cards(:cat), format: :js), params: { old_deck_id: decks(:study_now).id, new_deck_id: decks(:study_later).id }
-          end
-        end
-
-        it "does not create a duplicate card_deck record" do
-          assert_no_difference "CardDeck.where(card: cards(:cat), deck: decks(:study_later)).count" do
-            patch move_decks_card_path(cards(:cat), format: :js), params: { old_deck_id: decks(:study_now).id, new_deck_id: decks(:study_later).id }
-          end
-        end
-      end
-
-      describe "when the card moved is at the end of the deck" do
-        before do
-          card_decks(:cat_study_now).update(status: nil)
-          card_decks(:glass_study_now).update(status: "current")
-        end
-
-        it "returns the first card in the deck" do
-          assert_equal "current", card_decks(:glass_study_now).status
-          patch move_decks_card_path(cards(:glass), format: :js), params: { old_deck_id: decks(:study_now).id, new_deck_id: decks(:study_later).id }
-          assert_equal "current", card_decks(:cat_study_now).reload.status
-          assert_match /englishText.innerHTML = \"#{cards(:cat).english}\"/, response.body
-        end
-
-        describe "when the deck is set to auto-shuffle" do
-          before do
-            decks(:study_now).update(is_randomized: true)
-            decks(:study_now).reload
-          end
-
-          it "shuffles the deck" do
-            assert decks(:study_now).is_randomized
-            assert_equal "current", card_decks(:glass_study_now).status
-
-            assert_changes -> { CardDeck.where(deck_id: decks(:study_now).id).take(5) } do
-              patch move_decks_card_path(cards(:glass), format: :js), params: { old_deck_id: decks(:study_now).id, new_deck_id: decks(:study_later).id }
-            end
-          end
-
-          it "returns the next card" do
-            patch move_decks_card_path(cards(:glass), format: :js), params: { old_deck_id: decks(:study_now).id, new_deck_id: decks(:study_later).id }
-            first_card = decks(:study_now).reload.cards.first
-            assert_match /englishText.innerHTML = \"#{first_card.english}\"/, response.body
-          end
-        end
-      end
-
-      describe "when there are no more cards in the current deck" do
-        before do
-          CardDeck.where.not(id: card_decks(:cat_study_now).id).where(deck: decks(:study_now)).destroy_all
-        end
-
-        it "redirects to the decks path with message" do
-          patch move_decks_card_path(cards(:cat), format: :js), params: { old_deck_id: decks(:study_now).id, new_deck_id: decks(:study_later).id }
-          assert_redirected_to decks_path
-          assert_equal "You finished all the cards in Study Now!", flash[:success]
-        end
       end
     end
   end

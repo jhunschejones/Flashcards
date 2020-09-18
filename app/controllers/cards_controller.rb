@@ -31,34 +31,29 @@ class CardsController < ApplicationController
   end
 
   def update
+    # If we are updating the difficulty, the cards_to_study query may lose it's
+    # place in the deck. We need to check if the new difficulty falls within the
+    # decks's difficulty range, and if so move the current card marker back to
+    # the last card still in range before updating this card.
+    if card_params[:difficulty]
+      CardDeck.where(card: @card, status: CardDeck::CURRENT_CARD).each do |card_deck|
+        deck = card_deck.deck
+        unless (deck.minimum_difficulty..deck.maximum_difficulty).include?(card_params[:difficulty].to_i)
+          deck.previous_card
+        end
+      end
+    end
+
     @card.update(card_params)
-    redirect_to card_path(@card)
+    respond_to do |format|
+      format.json { head :ok }
+      format.html { redirect_to card_path(@card) }
+    end
   end
 
   def destroy
     @card.destroy
     respond_to(&:js)
-  end
-
-  def move_decks
-    @deck = Deck.includes(card_decks: [:card]).find(params[:old_deck_id])
-    card_deck_to_move = CardDeck.find_by(card: @card, deck: @deck)
-    card_deck_to_move.move_to(new_deck: Deck.find(params[:new_deck_id]))
-
-    # After a card_deck is moved position values cascade such that the old current
-    # position value should now have been re-assigned to the next card_deck. If
-    # the card moved was at the end of the deck, we should select the first card next.
-    next_card_deck = CardDeck.find_by(position: card_deck_to_move.position, deck: @deck) || @deck.card_decks.reload.first
-    next_card_deck = @deck.shuffle.card_decks.reload.first if next_card_deck&.should_shuffle?
-
-    next_card_deck&.update(status: CardDeck::CURRENT_CARD) || begin
-      flash[:success] = "You finished all the cards in #{@deck.name}!"
-      return redirect_to(decks_path)
-    end
-
-    @current_card = next_card_deck.card
-    @progress = "#{@deck.position_of(card: @current_card)} / #{@deck.cards.size}"
-    respond_to { |format| format.js { render '/decks/next_card' } }
   end
 
   def delete_audio_sample
@@ -75,7 +70,7 @@ class CardsController < ApplicationController
   private
 
   def card_params
-    params.require(:card).permit(:english, :kana, :kanji, :audio_sample)
+    params.require(:card).permit(:english, :kana, :kanji, :audio_sample, :difficulty)
   end
 
   def set_card
