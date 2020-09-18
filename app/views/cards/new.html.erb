@@ -1,5 +1,5 @@
 <div class="new-resource">
-  <div class="new-resource-form-container">
+  <div class="new-resource-form-container" data-controller="form">
     <h2 class="title is-4">New card</h2>
 
     <%= form_with(model: @card, url: cards_path) do |f| %>
@@ -19,15 +19,16 @@
       </div>
 
       <div class="field audio-sample-upload">
-        <div class="file is-small">
+        <div class="file is-small has-name">
           <label class="file-label">
-            <%= f.file_field :audio_sample, class: "file-input" %>
+            <%= f.file_field :audio_sample, class: "file-input", data: { target: "form.fileInput", action: "change->form#showFileName" } %>
             <span class="file-cta">
               <span class="file-icon">
                 <i class="fas fa-upload"></i>
               </span>
               <span class="file-label">Upload audio sample...</span>
             </span>
+            <span class="file-name" data-target="form.fileName"></span>
           </label>
         </div>
       </div>
