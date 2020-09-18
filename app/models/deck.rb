@@ -17,6 +17,7 @@ class Deck < ApplicationRecord
       new_positions = (1..card_decks.size).to_a.shuffle
       card_decks.map { |card_deck| card_deck.update(position: new_positions.pop) }
     end
+    CardDeck.where(deck: self, status: CardDeck::CURRENT_CARD).update(status: nil)
     self
   end
 

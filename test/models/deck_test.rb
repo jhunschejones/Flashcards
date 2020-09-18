@@ -24,6 +24,15 @@ class DeckTest < ActiveSupport::TestCase
       deck.shuffle
       deck.card_decks.pluck(:position).uniq.size == deck.card_decks.size
     end
+
+    it "resets the first card in the deck" do
+      card_decks(:cat_study_now).update(status: nil)
+      card_decks(:dog_study_now).update(status: "current")
+      assert_changes -> { CardDeck.find_by(deck: decks(:study_now), status: "current") } do
+        decks(:study_now).shuffle
+      end
+      assert_equal decks(:study_now).cards.first, decks(:study_now).current_card
+    end
   end
 
   describe "#cards_to_study" do
