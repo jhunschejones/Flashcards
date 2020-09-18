@@ -2,8 +2,8 @@
   <% if @current_card %>
     <div class="card-interaction-container" data-controller="card study" data-study-start-with="<%= @deck.start_with %>" data-study-card-update-url="<%= card_path(@current_card) %>">
       <div class="deck-card">
-        <div class="flip-card-button-container">
-          <span class="flip-card-button has-text-grey-lighter" data-action="click->study#flipCard">
+        <div class="flip-card-button-container" data-action="click->study#flipCard">
+          <span class="flip-card-button has-text-grey-lighter">
             <small>Flip card</small>
           </span>
         </div>
