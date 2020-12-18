@@ -12,16 +12,16 @@
           <i class="fas fa-ellipsis-h"></i>
         </span>
 
-        <div class="english-text" data-target="study.englishText"><%= @current_card.english %></div>
-        <div class="kana-text" data-target="study.kanaText"><%= @current_card.kana %></div>
-        <div class="kanji-text" data-target="study.kanjiText"><%= @current_card.kanji %></div>
-        <div class="audio-sample" data-target="study.audioSample">
+        <div class="english-text" data-study-target="englishText"><%= @current_card.english %></div>
+        <div class="kana-text" data-study-target="kanaText"><%= @current_card.kana %></div>
+        <div class="kanji-text" data-study-target="kanjiText"><%= @current_card.kanji %></div>
+        <div class="audio-sample" data-study-target="audioSample">
           <% if @current_card.audio_sample.attached? %>
             <%= render(template: 'decks/_play_audio_sample_button', locals: { current_card: @current_card }) %>
           <% end %>
         </div>
 
-        <div class="loader-wrapper" data-target="study.loader">
+        <div class="loader-wrapper" data-study-target="loader">
           <div class="loader is-loading"></div>
         </div>
 
@@ -41,7 +41,7 @@
           <% end %>
         <% end %>
 
-        <div class="card-options" data-target="study.cardOptions">
+        <div class="card-options" data-study-target="cardOptions">
           <div class="card-difficulty-label has-text-grey">Rate card difficulty:</div>
           <button class="button is-light" data-action="click->study#setCardDifficulty">1</button>
           <button class="button is-light" data-action="click->study#setCardDifficulty">2</button>

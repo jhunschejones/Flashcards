@@ -19,14 +19,14 @@
           <span class="navbar-title has-text-weight-semibold">Flashcards</span>
         <% end %>
 
-        <a role="button" class="navbar-burger burger" aria-label="menu" aria-expanded="false" data-target="main-nav.mainNavBurger" data-action="click->main-nav#toggle">
+        <a role="button" class="navbar-burger burger" aria-label="menu" aria-expanded="false" data-main-nav-target="mainNavBurger" data-action="click->main-nav#toggle">
           <span aria-hidden="true"></span>
           <span aria-hidden="true"></span>
           <span aria-hidden="true"></span>
         </a>
       </div>
 
-      <div class="navbar-menu main-nav-menu" data-target="main-nav.mainNavMenu">
+      <div class="navbar-menu main-nav-menu" data-main-nav-target="mainNavMenu">
         <div class="navbar-start main-nav-items">
           <%= link_to(decks_path, class: "navbar-item has-text-weight-bold") do %>
             <span class="icon is-small">
