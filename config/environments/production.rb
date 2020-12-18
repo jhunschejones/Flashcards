@@ -51,6 +51,8 @@ Rails.application.configure do
 
   config.session_store :cookie_store, expire_after: 14.days, key: "__Host-flashcards_session", secure: Rails.env.production?
 
+  config.action_dispatch.cookies_same_site_protection = :strict
+
   # Use the lowest log level to ensure availability of diagnostic information
   # when problems arise.
   config.log_level = :warn
