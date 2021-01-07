@@ -6,17 +6,19 @@
 
 if Rails.env.production?
   Rails.application.config.content_security_policy do |policy|
-    policy.font_src    :self, :https, :data
-    policy.img_src     :self, :https, :data
-    policy.media_src   :self, :https, :data
-    policy.object_src  :none
-    policy.script_src  :self, :unsafe_inline, "js-agent.newrelic.com", "bam.nr-data.net"
-    policy.style_src   :self, :unsafe_inline
-    # If you are using webpack-dev-server then specify webpack-dev-server host
-    # policy.connect_src :self, :https, "http://localhost:3035", "ws://localhost:3035"
+    policy.default_src     :none
+    policy.font_src        :self
+    policy.img_src         :self
+    policy.media_src       :self
+    policy.object_src      :none
+    policy.script_src      :self, :unsafe_inline, "https://js-agent.newrelic.com", "https://bam.nr-data.net"
+    policy.style_src       :self, :unsafe_inline
+    # https://docs.newrelic.com/docs/browser/new-relic-browser/getting-started/compatibility-requirements-browser-monitoring
+    policy.connect_src     :self, "https://bam.nr-data.net", "https://bam-cell.nr-data.net"
 
-    # Specify URI for violation reports
-    # policy.report_uri "/csp-violation-report-endpoint"
+    policy.form_action     :self
+    policy.base_uri        :self
+    policy.frame_ancestors :none
   end
 end
 
